@@ -23,6 +23,11 @@
         {% for i in courts_booked %}
             <div>Time: {{i.time}}</div>
             <div>Court: {{i.court}}</div>
+            <form method="POST" action="{{url_for('main.delete_court_booking') }}">
+                <input type="hidden" name="id" value="{{i.id}}">
+                <input type="submit" name="delete_court_reservation" data-time="{{i.time}}" data-court="{{i.court}}" value="Delete">
+            </form>
+            <br/>
         {% endfor %}
     </div>
 

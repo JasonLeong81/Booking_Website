@@ -62,4 +62,11 @@ def booking():
                 flash('This court is not available.')
     return render_template('booking.html',title='Booking',form=form)
 
-
+@main.route('/delete',methods=['POST','GET'])
+@login_required
+def delete_court_booking():
+    booking_to_be_deleted = Booking.query.filter_by(id=request.form['id']).first()
+    db.session.delete(booking_to_be_deleted)
+    db.session.commit()
+    flash('Your court reservation has been deleted.')
+    return redirect(url_for('user.account'))
