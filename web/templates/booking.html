@@ -6,19 +6,19 @@
     {{form.hidden_tag()}}
     <div>
         <label for="date">Date</label>
-        <input type="datetime" name="date" placeholder="YYYY-DD-MM">
+        <input type="datetime" name="date" value="2021-01-01">
     </div>
     <div>
         <label for="time">Start Time</label>
-        <input type="time" name="start_time">
+        <input type="time" name="start_time" value="16:50">
     </div>
     <div>
         <label for="time">End Time</label>
-        <input type="time" name="end_time">
+        <input type="time" name="end_time" value="17:50">
     </div>
     <div>
         {{form.court.label}}
-        {{form.court}}
+        {{form.court(value=1)}}
     </div>
     <div>
         {{form.submit}}

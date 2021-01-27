@@ -78,15 +78,22 @@ def booking():
                     if booked:
                         if -int(cleaned_date.hour) + int(booked[0][0].hour) == 1: # hourly
                             available.append([cleaned_date, cleaned_date + timedelta(hours=1)]) # able to book for back to back
-                            cleaned_date = booked[-1][1]
+                            if booked[-1][1].minute > 0:
+                                cleaned_date = booked[-1][1]
+                                cleaned_date = cleaned_date.replace(hour=booked[-1][1].hour+1,minute=0)
+                            else:
+                                cleaned_date = booked[-1][1]
+                            # print('SECOND HALF',cleaned_date)
                             continue
                     available.append([cleaned_date, cleaned_date + timedelta(hours=1)])
                     cleaned_date += timedelta(hours=1)
 
             for i in available:
                 temp = (int(i[0].hour),int(i[1].hour))
+                print(temp)
                 temp1 = (int(cleaned_start_time.hour),int(cleaned_end_time.hour))
                 if temp1 == temp:
+                    # print('yeay')
                     booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user)
                     db.session.add(booking)
                     db.session.commit()
