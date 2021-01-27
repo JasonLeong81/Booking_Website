@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Home</h1>
+{% if current_user.is_authenticated %}
+    <form method="POST" action="">
+        {{form.hidden_tag()}}
+            <div>
+                <div>
+                    {{form.feedback.label}}
+                    {{form.feedback}}
+                </div>
+            </div>
+        <div>
+            {{form.submit}}
+        </div>
+    </form>
+{% endif %}
+{% endblock content %}
+

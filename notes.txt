@@ -1,0 +1,37 @@
+git config --get remote.origin.url
+
+Open File -> Settings -> Project: -> Project Structure
+Then mark projects as a source directory.
+
+# installations
+pip install flask_sqlalchemy
+pip install flask_wtf
+pip install email_validator
+pip install flask_login
+
+# database testing
+from web.models import User
+u = User.query.all()[0]
+u.email
+
+# database testing_1
+from web.models import User, Feedback
+u = User.query.all()[0]
+f = Feedback.query.all()[0]
+
+# database testing_2
+from web.models import User, Feedback, Booking
+u = User.query.all()
+f = Feedback.query.all()
+b = Booking.query.all()
+
+# database testing_3
+from web.models import User, Feedback, Booking
+b = Booking.query.all()[0]
+db.session.delete(b)
+db.session.commit()
+
+
+
+
+
