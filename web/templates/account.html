@@ -21,7 +21,8 @@
     <br/>
     <div>Courts Booked :
         {% for i in courts_booked %}
-            <div>Time: {{i.time}}</div>
+            <div>Start Time: {{i.start_time}}</div>
+            <div>End Time: {{i.end_time}}</div>
             <div>Court: {{i.court}}</div>
             <form method="POST" action="{{url_for('main.delete_court_booking') }}">
                 <input type="hidden" name="id" value="{{i.id}}">
