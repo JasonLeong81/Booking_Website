@@ -78,7 +78,7 @@ def booking():
                     if booked:
                         if -int(cleaned_date.hour) + int(booked[0][0].hour) == 1: # hourly
                             available.append([cleaned_date, cleaned_date + timedelta(hours=1)]) # able to book for back to back
-                            if booked[-1][1].minute > 0:
+                            if booked[-1][1].minute > 0: # making sure that you book the hour
                                 cleaned_date = booked[-1][1]
                                 cleaned_date = cleaned_date.replace(hour=booked[-1][1].hour+1,minute=0)
                             else:
@@ -87,18 +87,26 @@ def booking():
                             continue
                     available.append([cleaned_date, cleaned_date + timedelta(hours=1)])
                     cleaned_date += timedelta(hours=1)
-
-            for i in available:
-                temp = (int(i[0].hour),int(i[1].hour))
-                print(temp)
-                temp1 = (int(cleaned_start_time.hour),int(cleaned_end_time.hour))
-                if temp1 == temp:
-                    # print('yeay')
-                    booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user)
-                    db.session.add(booking)
-                    db.session.commit()
-                    flash('Your court has been booked.')
-                    return redirect(url_for('user.account'))
+            number_of_hours = cleaned_end_time.hour - cleaned_start_time.hour
+            number_of_hours_counter = 0
+            cleaned_start_time_temp = cleaned_start_time
+            available_temp = [(start.hour,end.hour) for start,end in available]
+            # print(number_of_hours)
+            for _ in range(number_of_hours):
+                temp1 = (int(cleaned_start_time_temp.hour),int(cleaned_start_time_temp.hour+1))
+                cleaned_start_time_temp = cleaned_start_time_temp + timedelta(hours=1)
+                print(available)
+                print(temp1)
+                if temp1 in available_temp:
+                    number_of_hours_counter += 1
+                    if number_of_hours_counter == int(number_of_hours):
+                        booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user)
+                        db.session.add(booking)
+                        db.session.commit()
+                        flash('Your court has been booked.')
+                        return redirect(url_for('user.account'))
+                    else:
+                        continue
             else:
                 flash('This court is not available.')
     return render_template('booking.html',title='Booking',form=form)

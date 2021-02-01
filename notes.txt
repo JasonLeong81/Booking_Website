@@ -33,5 +33,7 @@ db.session.commit()
 
 
 
-
+### booking more than 1 hour
+### delete a user and delete all related fields
+###
 
