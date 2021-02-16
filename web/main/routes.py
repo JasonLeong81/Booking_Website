@@ -63,7 +63,7 @@ def booking():
             booked_from_db = Booking.query.filter_by(court=form.court.data)
 
             for i in booked_from_db:
-                if i.start_time.day == cleaned_date.day:
+                if i.start_time.day == cleaned_date.day: # getting those courts that are booked on a particular day
                     booked.append([i.start_time,i.end_time])
             booked = sorted(booked)
 
@@ -95,8 +95,8 @@ def booking():
             for _ in range(number_of_hours):
                 temp1 = (int(cleaned_start_time_temp.hour),int(cleaned_start_time_temp.hour+1))
                 cleaned_start_time_temp = cleaned_start_time_temp + timedelta(hours=1)
-                print(available)
-                print(temp1)
+                # print(available)
+                # print(temp1)
                 if temp1 in available_temp:
                     number_of_hours_counter += 1
                     if number_of_hours_counter == int(number_of_hours):

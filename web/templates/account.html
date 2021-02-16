@@ -2,13 +2,6 @@
 
 
 {% block content %}
-
-
-
-
-
-
-
     <h1>Account</h1>
     <div>Name : {{r.data.username}}</div>
     <div>Email : {{r['data'].email}}</div>
@@ -32,6 +25,21 @@
         {% endfor %}
     </div>
 
+
+    <form method="POST" action="">
+        {{form.hidden_tag()}}
+        <div>
+            {{form.current_email.label}}
+            {{form.current_email}}
+        </div>
+        <div>
+            {{form.new_email.label}}
+            {{form.new_email}}
+        </div>
+        <div>
+            {{form.submit}}
+        </div>
+    </form>
 
 
 

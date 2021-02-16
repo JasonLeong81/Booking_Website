@@ -73,17 +73,43 @@ free,not_free = check_availability(l,court,Datetime)
 # for i in not_free:
 #     print(f'Booked from {i[0].hour} to {i[1].hour}')
 
+def notification(title,message,icon=None):
+    # Plyer is a Python library for accessing features of your hardware / platforms.
+    # pythonw <filename.py> to make it run in the background
+    # relax icon ico
+    from plyer import notification
+    notification.notify(
+        title=title,
+        message=message,
+        app_icon = icon,
+        timeout = 10 # seconds
+    )
+title = 'Rest'
+message = 'Rest your eyes for 20 seconds.'
+icon = 'coffee.ico'
+# import time
+# if __name__=='__main__':
+#     while True:
+#         notification(title, message,icon)
+#         time.sleep(1200) # 1200 seconds = 20 minutes
+# pythonw test.py
 
 
+# print(bin(123)) # divide two and write from bottom up the remainders
 
 
+### Bcrypt ######################################3
+# from bcrypt import *
+# password = b'super'
+# s = gensalt()
+# hashed = hashpw(password, s)
+# if checkpw(password,hashed):
+#     print('Yes')
+# else:
+#     print('Nope')
+# print(bytes(password))
 
-
-
-
-
-
-
+### Send email ####################
 
 
 
