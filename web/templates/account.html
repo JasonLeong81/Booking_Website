@@ -41,7 +41,20 @@
         </div>
     </form>
 
-
+    <form method="POST" action="">
+        {{form1.hidden_tag()}}
+        <div>
+            {{form1.current_password.label}}
+            {{form1.current_password}}
+        </div>
+        <div>
+            {{form1.new_password.label}}
+            {{form1.new_password}}
+        </div>
+        <div>
+            {{form1.submit}}
+        </div>
+    </form>
 
 
 

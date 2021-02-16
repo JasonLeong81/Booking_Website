@@ -22,4 +22,7 @@ class UpdateEmailForm(FlaskForm):
     new_email = StringField('New email', validators=[Email()],default='')
     submit = SubmitField('Confirm')
 
-
+class UpdatePasswordForm(FlaskForm):
+    current_password = StringField('Current password', validators=[DataRequired()],default='')
+    new_password = StringField('New password', validators=[DataRequired()],default='')
+    submit = SubmitField('Confirm')

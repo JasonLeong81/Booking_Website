@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm
+from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm
 from web.models import User, Feedback, Booking
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
@@ -11,7 +11,8 @@ user = Blueprint('user',__name__)
 @login_required
 def account():
     # db.session.query(User).filter(User.username == 'Jason').update({User.username: 'Jasoni'}) # updating rows in database
-
+    # hashed = hashpw(bytes(form.password.data, encoding='utf-8'), gensalt())
+    # if user and checkpw(bytes(form.password.data, encoding='utf-8'), p):
 
     courts_booked = Booking.query.filter_by(user_id=current_user.id)
     feedbacks_provided = Feedback.query.filter_by(user_id=current_user.id)
@@ -21,6 +22,7 @@ def account():
     else:
         resp = {"result": 401,
                 "data": {"message": "user no login"}}
+
     form = UpdateEmailForm()
     if form.validate_on_submit():
         new_email = form.new_email.data.strip()
@@ -34,7 +36,22 @@ def account():
                 db.session.query(User).filter(User.email == current_email).update({User.email: new_email})
                 db.session.commit()
                 flash('Your email has been updated.')
-    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form)
+    form.current_email.data = ''
+    form.new_email.data = ''
+
+    form1 = UpdatePasswordForm()
+    if form1.validate_on_submit():
+        new_password = form1.new_password.data.strip()
+        current_password = form1.current_password.data.strip()
+        if not checkpw(bytes(current_password, encoding='utf-8'), current_user.password):
+            flash('Current password is not entered correctly.')
+        else:
+            db.session.query(User).filter(User.email == current_user.email).update({User.password: hashpw(bytes(new_password, encoding='utf-8'), gensalt())})
+            db.session.commit()
+            flash('Your password has been updated.')
+    form1.current_password.data = ''
+    form1.new_password.data = ''
+    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1)
 
 @user.route('/login',methods=['GET','POST'])
 def login():
