@@ -16,6 +16,10 @@ def home():
         db.session.commit()
         flash('You feedback has been received in good order. Thank you for your time and feedback.')
         return redirect(url_for('user.account'))
+
+
+
+
     return render_template('home.html',title='Home',form=form)
 
 @main.route('/about')
@@ -111,11 +115,20 @@ def booking():
                 flash('This court is not available.')
     return render_template('booking.html',title='Booking',form=form)
 
-@main.route('/delete',methods=['POST','GET'])
+@main.route('/delete_court',methods=['POST','GET'])
 @login_required
 def delete_court_booking():
-    booking_to_be_deleted = Booking.query.filter_by(id=request.form['id']).first()
+    booking_to_be_deleted = Booking.query.filter_by(id=request.form['id_court']).first()
     db.session.delete(booking_to_be_deleted)
     db.session.commit()
     flash('Your court reservation has been deleted.')
+    return redirect(url_for('user.account'))
+
+@main.route('/delete_feedback',methods=['POST','GET'])
+@login_required
+def delete_Feedback():
+    feedback_to_be_deleted = Feedback.query.filter_by(id=request.form['id_feedback']).first()
+    db.session.delete(feedback_to_be_deleted)
+    db.session.commit()
+    flash('Your feedback has been deleted.')
     return redirect(url_for('user.account'))

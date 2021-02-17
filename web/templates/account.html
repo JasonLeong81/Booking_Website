@@ -9,6 +9,11 @@
     <div>Feedbacks Provided :
         {% for i in feedbacks_provided %}
             <div>{{i.feedback}}</div>
+            <form method="POST" action="{{url_for('main.delete_Feedback') }}">
+                <input type="hidden" name="id_feedback" value="{{i.id}}">
+                <input type="submit" name="delete_feedback" value="Delete">
+            </form>
+            <br/>
         {% endfor %}
     </div>
     <br/>
@@ -18,14 +23,15 @@
             <div>End Time: {{i.end_time}}</div>
             <div>Court: {{i.court}}</div>
             <form method="POST" action="{{url_for('main.delete_court_booking') }}">
-                <input type="hidden" name="id" value="{{i.id}}">
+                <input type="hidden" name="id_court" value="{{i.id}}">
                 <input type="submit" name="delete_court_reservation" data-time="{{i.time}}" data-court="{{i.court}}" value="Delete">
             </form>
             <br/>
         {% endfor %}
     </div>
+    <br>
 
-
+    <h1><u>Change My Account Information</u></h1>
     <form method="POST" action="">
         {{form.hidden_tag()}}
         <div>
@@ -56,7 +62,20 @@
         </div>
     </form>
 
-
+    <form method="POST" action="">
+        {{form2.hidden_tag()}}
+        <div>
+            {{form2.current_username.label}}
+            {{form2.current_username}}
+        </div>
+        <div>
+            {{form2.new_username.label}}
+            {{form2.new_username}}
+        </div>
+        <div>
+            {{form2.submit}}
+        </div>
+    </form>
 
 
 

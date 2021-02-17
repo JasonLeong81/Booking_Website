@@ -28,6 +28,12 @@ class Booking(db.Model,UserMixin):
     court = db.Column(db.Integer,nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False) # user is the User table
 
+class Promotion(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    Title = db.Column(db.String(20),nullable=False)
+    Content = db.Column(db.String(20),nullable=False)
+    Dates = db.Column(db.DateTime,nullable=False)
+
 # UserMixin class provides the implementation of this properties. Its the reason you can call for example is_authenticated to check if login credentials provide is correct
 # or not instead of having to write a method to do that yourself.
 

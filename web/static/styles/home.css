@@ -1,0 +1,14 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box; /* include padding and margin */
+}
+
+a{
+    text-decoration:none;
+    color:green;
+}
+
+h1{
+    color:blue;
+}

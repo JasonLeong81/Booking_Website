@@ -26,3 +26,8 @@ class UpdatePasswordForm(FlaskForm):
     current_password = StringField('Current password', validators=[DataRequired()],default='')
     new_password = StringField('New password', validators=[DataRequired()],default='')
     submit = SubmitField('Confirm')
+
+class UpdateUsernameForm(FlaskForm):
+    current_username = StringField('Current username', validators=[DataRequired()],default='')
+    new_username = StringField('New username', validators=[DataRequired()],default='')
+    submit = SubmitField('Confirm')
