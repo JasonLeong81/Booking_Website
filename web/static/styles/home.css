@@ -1,7 +1,7 @@
-*{
+/* *{
     margin:0;
     padding:0;
-    box-sizing:border-box; /* include padding and margin */
+    box-sizing:border-box;
 }
 
 a{
@@ -12,3 +12,5 @@ a{
 h1{
     color:blue;
 }
+
+*/
