@@ -25,14 +25,14 @@
 </div>
 
 <div>
+    {% if current_user.is_authenticated %}
     <div style="overflow-y: scroll; height:500px;">
         {% for i in MESSAGES %}
         <p>{{i.owner.username}}: <b style="margin-left:10px;">{{i.messages}}</b></p>
         <p style="text-align-last:right;">{{i.dates.date()}}</p>
         <br>
         {% endfor %}
-
-        {% if current_user.is_authenticated %}
+    </div>
         <form action="" method="POST" style="bottom:0; margin: 0% 0% 0% 0%;">
             {{form1.hidden_tag()}}
                 <div>
@@ -42,10 +42,9 @@
                 {{form1.submit}}
             </div>
         </form>
-        {% else %}
-            <h1 style="text-align:center;">Log in to send your message!</h1>
-        {% endif %}
-    </div>
+    {% else %}
+        <h1 style="text-align:center;">Log in to send your message!</h1>
+    {% endif %}
 </div>
 
 

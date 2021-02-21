@@ -129,7 +129,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return render_template('about.html',title='About')
+    return render_template('home.html',title='Home')
 
 
 
