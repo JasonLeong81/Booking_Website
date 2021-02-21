@@ -75,6 +75,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.strip()).first()
+        if not user:
+            flash('This email is not registered in our servers.')
+            return render_template('login.html', title='Login', form=form)
         p = user.password
         # if user and form.password.data == p:
         if user and checkpw(bytes(form.password.data,encoding='utf-8'),p):
@@ -87,7 +90,7 @@ def login():
         else:
             flash('Login unsuccessful. Please check email and password.')
     else:
-        if len(form.email.data) > 0:
+        if form.email.data:
             flash('Invalid Email.')
     return render_template('login.html',title='Login',form=form)
 
