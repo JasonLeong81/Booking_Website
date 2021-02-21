@@ -86,18 +86,28 @@ def login():
             return redirect(url_for('user.account'))
         else:
             flash('Login unsuccessful. Please check email and password.')
+    else:
+        flash('Please check your email and password again.')
     return render_template('login.html',title='Login',form=form)
 
 @user.route('/register',methods=['POST','GET'])
 def register():
+    confirm = 0
     form = RegistrationForm()
     if form.validate_on_submit(): # from Flaskform
         hashed = hashpw(bytes(form.password.data,encoding='utf-8'),gensalt())
         user = User(username=form.username.data,email=form.email.data,password=hashed)
-        db.session.add(user)
-        db.session.commit()
-        flash("You're account has been created. ")
-        return redirect(url_for('user.login'))
+        if User.query.filter_by(username=form.username.data.strip()).first():
+            flash('This username has been taken. Please try a different one.')
+            confirm += 1
+        if User.query.filter_by(email=form.email.data.strip()).first():
+            flash('This email has been taken. Please try a different one.')
+            confirm += 1
+        if confirm == 0:
+            db.session.add(user)
+            db.session.commit()
+            flash("You're account has been created. ")
+            return redirect(url_for('user.login'))
     return render_template('register.html',title='Register',form=form)
 
 @user.route('/logout')
