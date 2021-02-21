@@ -114,7 +114,11 @@ from datetime import datetime
 # print(dir(datetime.today()))
 a = datetime.today().time()
 # print(dir(a))
-# print(a.hour,a.minute,a.second)
+print(a.hour,a.minute)
+b = datetime.utcnow()
+# print(b.date(),b.time())
+# print(b)
+print(datetime.strftime(b, '%H:%M'))
 
 # from web import db
 # from web.models import Messages

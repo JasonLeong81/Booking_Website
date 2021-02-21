@@ -27,8 +27,9 @@
 <div>
     <div style="overflow-y: scroll; height:500px;">
         {% for i in MESSAGES %}
-            <span>{{i.owner.username}}: <b style="margin-left:10px;">{{i.messages}}</b> <p style="text-align-last:right;">{{i.dates.time().hour}}:{{i.dates.time().minute}}</p> </span>
-                <br>
+        <p>{{i.owner.username}}: <b style="margin-left:10px;">{{i.messages}}</b></p>
+        <p style="text-align-last:right;">{{i.dates.date()}}</p>
+        <br>
         {% endfor %}
 
         {% if current_user.is_authenticated %}

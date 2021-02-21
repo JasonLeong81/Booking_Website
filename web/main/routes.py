@@ -20,7 +20,7 @@ def home():
     form1 = MessagesForm()
     if form1.validate_on_submit():
         if form1.messages.data:
-            new_message = Messages(messages=form1.messages.data,dates=datetime.today(),owner=current_user)
+            new_message = Messages(messages=form1.messages.data,dates=datetime.utcnow(),owner=current_user)
             db.session.add(new_message)
             db.session.commit()
             form1.messages.data = ''
