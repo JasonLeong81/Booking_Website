@@ -26,19 +26,24 @@
 
 <div>
     <div style="overflow-y: scroll; height:500px;">
-        <form action="" method="POST" style="bottom:0; margin: 0% 0% 0% 0%;">
-            {{form1.hidden_tag()}}
-            {% for i in MESSAGES %}
+        {% for i in MESSAGES %}
             <span>{{i.owner.username}}: <b style="margin-left:10px;">{{i.messages}}</b> <p style="text-align-last:right;">{{i.dates.time().hour}}:{{i.dates.time().minute}}</p> </span>
                 <br>
-            {% endfor %}
-            <div>
-                {{form1.messages}}
-            </div>
+        {% endfor %}
+
+        {% if current_user.is_authenticated %}
+        <form action="" method="POST" style="bottom:0; margin: 0% 0% 0% 0%;">
+            {{form1.hidden_tag()}}
+                <div>
+                    {{form1.messages}}
+                </div>
             <div>
                 {{form1.submit}}
             </div>
         </form>
+        {% else %}
+            <h1 style="text-align:center;">Log in to send your message!</h1>
+        {% endif %}
     </div>
 </div>
 
