@@ -17,6 +17,32 @@
         </div>
     </form>
 {% endif %}
+
+<div style="padding-top:10px;" >
+    <div><hr></div>
+    <div><p align="center">View Message History</p></div>
+    <div><hr></div>
+</div>
+
+<div>
+    <div style="overflow-y: scroll; height:500px;">
+        <form action="" method="POST" style="bottom:0; margin: 0% 0% 0% 0%;">
+            {{form1.hidden_tag()}}
+            {% for i in MESSAGES %}
+            <span>{{i.owner.username}}: <b style="margin-left:10px;">{{i.messages}}</b> <p style="text-align-last:right;">{{i.dates.time().hour}}:{{i.dates.time().minute}}</p> </span>
+                <br>
+            {% endfor %}
+            <div>
+                {{form1.messages}}
+            </div>
+            <div>
+                {{form1.submit}}
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <link rel= "stylesheet" href= "{{ url_for('static',filename='styles/home.css') }}">
 <script src="{{url_for('static',filename='js/home.js')}}"></script>
 {% endblock content %}

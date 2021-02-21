@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
-from web.main.forms import FeedbackForm, CourtBookingForm
+from web.main.forms import FeedbackForm, CourtBookingForm, MessagesForm
 from web import db
-from web.models import Feedback, Booking
+from web.models import Feedback, Booking, Messages
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 
@@ -16,7 +16,17 @@ def home():
         db.session.commit()
         flash('You feedback has been received in good order. Thank you for your time and feedback.')
         return redirect(url_for('user.account'))
-    return render_template('home.html',title='Home',form=form)
+
+    form1 = MessagesForm()
+    if form1.validate_on_submit():
+        if form1.messages.data:
+            new_message = Messages(messages=form1.messages.data,dates=datetime.today(),owner=current_user)
+            db.session.add(new_message)
+            db.session.commit()
+            form1.messages.data = ''
+            return redirect(url_for('main.home')) # redirect to start fresh
+    m = Messages.query.all()
+    return render_template('home.html',title='Home',form=form,MESSAGES=m,form1=form1)
 
 @main.route('/about')
 def about():

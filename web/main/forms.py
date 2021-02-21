@@ -10,3 +10,6 @@ class CourtBookingForm(FlaskForm):
     court = IntegerField('Court Number',validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class MessagesForm(FlaskForm):
+    messages = StringField('Messages')
+    submit = SubmitField('Send')

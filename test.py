@@ -110,9 +110,17 @@ icon = 'coffee.ico'
 # print(bytes(password))
 
 ### Send email ####################
+from datetime import datetime
+# print(dir(datetime.today()))
+a = datetime.today().time()
+# print(dir(a))
+# print(a.hour,a.minute,a.second)
 
-
-
+# from web import db
+# from web.models import Messages
+# for i in Messages.query.all():
+#     db.session.delete(i)
+#     db.session.commit()
 
 
 

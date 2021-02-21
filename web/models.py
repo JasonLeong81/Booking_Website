@@ -15,6 +15,7 @@ class User(db.Model,UserMixin):
     password = db.Column(db.String(60),nullable=False)
     feedback = db.relationship('Feedback',backref='owner',lazy='subquery') # Feedback model # backref allows us to do Feedback.query.all()[0].owner.(attributes of owner who created the feedback) lazy (select,joined,dynamic,subquery) # uselist = True means we can have more than one child
     court_booking = db.relationship('Booking',backref='owner',lazy='subquery')
+    messages = db.relationship('Messages',backref='owner',lazy='subquery')
 
 class Feedback(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
@@ -33,6 +34,12 @@ class Promotion(db.Model,UserMixin):
     Title = db.Column(db.String(20),nullable=False)
     Content = db.Column(db.String(20),nullable=False)
     Dates = db.Column(db.DateTime,nullable=False)
+
+class Messages(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    messages = db.Column(db.String(20),nullable=False)
+    dates = db.Column(db.DateTime,nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False) # user is the User table
 
 # UserMixin class provides the implementation of this properties. Its the reason you can call for example is_authenticated to check if login credentials provide is correct
 # or not instead of having to write a method to do that yourself.
