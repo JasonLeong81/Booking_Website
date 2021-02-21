@@ -36,6 +36,9 @@ def account():
                 db.session.query(User).filter(User.email == current_email).update({User.email: new_email})
                 db.session.commit()
                 flash('Your email has been updated.')
+    else:
+        if form.current_email.data:
+            flash('This is not your email. Please try again.')
     form.current_email.data = ''
     form.new_email.data = ''
 
@@ -49,6 +52,9 @@ def account():
             db.session.query(User).filter(User.email == current_user.email).update({User.password: hashpw(bytes(new_password, encoding='utf-8'), gensalt())})
             db.session.commit()
             flash('Your password has been updated.')
+    else:
+        if form.current_password.data:
+            flash('This is not your password. Please try again.')
     form1.current_password.data = ''
     form1.new_password.data = ''
 
@@ -62,6 +68,9 @@ def account():
             db.session.query(User).filter(User.email == current_user.email).update({User.username:new_username })
             db.session.commit()
             flash('Your username has been updated.')
+    else:
+        if form.current_username.data:
+            flash('This is not your username. Please try again.')
     form2.current_username.data = ''
     form2.new_username.data = ''
 

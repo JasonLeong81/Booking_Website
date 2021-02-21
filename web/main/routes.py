@@ -16,10 +16,6 @@ def home():
         db.session.commit()
         flash('You feedback has been received in good order. Thank you for your time and feedback.')
         return redirect(url_for('user.account'))
-
-
-
-
     return render_template('home.html',title='Home',form=form)
 
 @main.route('/about')
