@@ -5,8 +5,8 @@ from web.models import User
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
-                            validators=[Length(min=2, max=20)],default='Jason')
-    email = StringField('Email', validators=[Email()],default='aaa@gmail.com')
+                            validators=[Length(min=2, max=20)],default='username')
+    email = StringField('Email', validators=[Email()],default='xxx@gmail.com')
     password = PasswordField('Password', validators=[])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[EqualTo('password')])

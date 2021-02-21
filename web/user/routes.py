@@ -101,7 +101,10 @@ def register():
             flash('This username has been taken. Please try a different one.')
             confirm += 1
         if User.query.filter_by(email=form.email.data.strip()).first():
-            flash('This email has been taken. Please try a different one.')
+            if confirm == 0:
+                flash('This email has been taken. Please try a different one.')
+            else:
+                pass
             confirm += 1
         if confirm == 0:
             db.session.add(user)
