@@ -87,7 +87,7 @@ def login():
         else:
             flash('Login unsuccessful. Please check email and password.')
     else:
-        if len(form.email.data.strip) > 0:
+        if len(form.email.data.strip()) > 0:
             flash('Invalid Email.')
     return render_template('login.html',title='Login',form=form)
 
