@@ -61,6 +61,8 @@ def account():
         current_username = form2.current_username.data.strip()
         if current_user.username != current_username:
             flash('Current username is not entered correctly.')
+        elif User.query.filter_by(username=new_username).first():
+            flash('This username has been taken. Please try a differnt one.')
         else:
             db.session.query(User).filter(User.email == current_user.email).update({User.username:new_username })
             db.session.commit()
