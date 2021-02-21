@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>My Messages</h1>
+    {% for i in m %}
+<!--        <p><b style="margin-left:10px;">{{i.messages}}</b> <span style="text-align-last:right;">{{i.dates}}</span></p>-->
+        <div>Message: {{i.messages}}</div>
+        <div>{{i.dates}}</div>
+        <form method="POST" action="{{url_for('user.delete_message') }}">
+            <input type="hidden" name="id_message" value="{{i.id}}">
+            <input type="submit" name="delete_message" value="Delete">
+        </form>
+        <br>
+    {% endfor %}
+{% endblock content %}

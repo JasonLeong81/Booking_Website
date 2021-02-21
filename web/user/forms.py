@@ -31,3 +31,4 @@ class UpdateUsernameForm(FlaskForm):
     current_username = StringField('Current username', validators=[DataRequired()],default='')
     new_username = StringField('New username', validators=[DataRequired()],default='')
     submit = SubmitField('Confirm')
+

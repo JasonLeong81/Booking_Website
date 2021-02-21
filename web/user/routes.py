@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm
-from web.models import User, Feedback, Booking
+from web.models import User, Feedback, Booking, Messages
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
 from web import mail, Message, db
@@ -131,9 +131,19 @@ def logout():
     logout_user()
     return render_template('home.html',title='Home')
 
+@user.route('/messages')
+@login_required
+def messages():
+    m = Messages.query.filter_by(user_id=current_user.id)
+    return render_template('Messages.html',title='Messages',m=m)
 
-
-
+@user.route('/delete_messages',methods=['POST','GET'])
+@login_required
+def delete_message():
+    message_to_delete = Messages.query.filter_by(id=request.form['id_message']).first()
+    db.session.delete(message_to_delete)
+    db.session.commit()
+    return redirect(url_for('user.messages'))
 
 
 
