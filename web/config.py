@@ -1,6 +1,8 @@
+import os
 class Config:
     SECRET_KEY = 'jason'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///jason.db'
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///jason.db'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
