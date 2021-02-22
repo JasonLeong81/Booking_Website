@@ -12,3 +12,5 @@ class Config:
     MAIL_PASSWORD = '378100Yc'
 
 
+# no module names psycopg2
+# 
