@@ -12,5 +12,5 @@ class Config:
     MAIL_PASSWORD = '378100Yc'
 
 
-# no module names psycopg2
-# 
+# no module names psycopg2 -> pip install psycopg2
+#
