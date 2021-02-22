@@ -1,8 +1,8 @@
 from web import db, login_manager, app
 from datetime import datetime
 from flask_login import UserMixin
-from flask_admin.contrib.sqla import ModelView
-from flask_admin import Admin
+# from flask_admin.contrib.sqla import ModelView
+# from flask_admin import Admin
 
 
 @login_manager.user_loader
