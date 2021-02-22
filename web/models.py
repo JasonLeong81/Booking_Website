@@ -10,9 +10,9 @@ def load_user(user_id):
 
 class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)  # string of max 20 len
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(60),nullable=False)
+    username = db.Column(db.String(30), unique=True, nullable=False)  # string of max 20 len
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100),nullable=False)
     feedback = db.relationship('Feedback',backref='owner',lazy='subquery') # Feedback model # backref allows us to do Feedback.query.all()[0].owner.(attributes of owner who created the feedback) lazy (select,joined,dynamic,subquery) # uselist = True means we can have more than one child
     court_booking = db.relationship('Booking',backref='owner',lazy='subquery')
     messages = db.relationship('Messages',backref='owner',lazy='subquery')
@@ -20,7 +20,7 @@ class User(db.Model,UserMixin):
 
 class Feedback(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
-    feedback = db.Column(db.String(20),nullable=False)
+    feedback = db.Column(db.String(100),nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False) # user is the User table
 
 class Booking(db.Model,UserMixin):
@@ -33,12 +33,12 @@ class Booking(db.Model,UserMixin):
 class Promotion(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     Title = db.Column(db.String(20),nullable=False)
-    Content = db.Column(db.String(20),nullable=False)
+    Content = db.Column(db.String(100),nullable=False)
     Dates = db.Column(db.DateTime,nullable=False)
 
 class Messages(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    messages = db.Column(db.String(20),nullable=False)
+    messages = db.Column(db.String(100),nullable=False)
     dates = db.Column(db.DateTime,nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
 
