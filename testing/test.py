@@ -158,4 +158,3 @@ print(datetime.strftime(b, '%H:%M'))
 
 
 
-
