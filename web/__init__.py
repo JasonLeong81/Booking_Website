@@ -14,6 +14,7 @@ login_manager.init_app(app)
 # print(db, 'dbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
 mail = Mail(app)
 
+
 from web.main.routes import main
 app.register_blueprint(main)
 from web.user.routes import user
