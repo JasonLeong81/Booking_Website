@@ -13,7 +13,7 @@ def account():
     # db.session.query(User).filter(User.username == 'Jason').update({User.username: 'Jasoni'}) # updating rows in database
     # hashed = hashpw(bytes(form.password.data, encoding='utf-8'), gensalt())
     # if user and checkpw(bytes(form.password.data, encoding='utf-8'), p):
-
+    number_of_users = User.query.all()
     courts_booked = Booking.query.filter_by(user_id=current_user.id)
     feedbacks_provided = Feedback.query.filter_by(user_id=current_user.id)
     if current_user.is_authenticated:
@@ -74,7 +74,7 @@ def account():
     form2.new_username.data = ''
 
 
-    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2)
+    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2,number_of_users=len(number_of_users))
 
 @user.route('/login',methods=['GET','POST'])
 def login():
