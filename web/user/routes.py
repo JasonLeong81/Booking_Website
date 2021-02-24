@@ -356,7 +356,7 @@ def covid():
     # ans = input('Enter date: ')
     ans = ''
     if request.method == 'POST':
-        ans = request.form.get('date')
+        ans = request.form.get('date').strip()
     # print('AAAAAAAAAAAAAAAAAA:',ans)
     # return render_template('random_functions.html',error=error,results=results,default=default)
 

@@ -5,6 +5,6 @@ function copy(text) {
   input.select();
   document.execCommand('copy');
   input.parentNode.removeChild(input);
-  alert('Copied link'.concat(text));
-  console.log('hi');
+  /*alert('Copied link'.concat(text));*/
+  console.log('Finally this is working omg');
 }
