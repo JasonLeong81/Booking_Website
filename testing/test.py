@@ -114,22 +114,19 @@ from datetime import datetime
 # print(dir(datetime.today()))
 a = datetime.today().time()
 # print(dir(a))
-print(a.hour,a.minute)
+# print(a.hour,a.minute)
 b = datetime.utcnow()
 # print(b.date(),b.time())
 # print(b)
-print(datetime.strftime(b, '%H:%M'))
+# print(datetime.strftime(b, '%H:%M'))
 
 # from web import db
 # from web.models import Messages
 # for i in Messages.query.all():
 #     db.session.delete(i)
 #     db.session.commit()
-
-
-
-
-
+from datetime import date
+print(date.today().strftime('%Y %m %d'))
 
 
 

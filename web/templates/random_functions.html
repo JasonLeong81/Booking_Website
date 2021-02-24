@@ -1,5 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>This is where you can find random things. Enjoy :)</h1>
+    <h1></h1>
+
+    <div>
+        {% if default1| length > 0 %}
+            {% for i in default1 %}
+                {{i}}
+                <br>
+            {% endfor %}
+        {% endif %}
+        <br>
+        <form method="POST" action="">
+            <label for="date">Date</label>
+            <input type="date" name="date" placeholder="{{today}}">
+            <input type="submit" value="Find">
+        </form>
+    </div>
+
+    <div style="padding-top:50px;">
+        {% if default2| length > 0 %}
+            {% for i in default2 %}
+                {{i}}
+                <br>
+            {% endfor %}
+        {% endif %}
+        <br>
+        {% if error| length > 0 %}
+            {% for i in error %}
+                {{i}}
+                <br>
+            {% endfor %}
+        <br>
+        {% elif results| length >0 %}
+            {% for i in results %}
+                {{i}}
+                <br>
+            {% endfor %}
+            <br>
+        {% endif %}
+    </div>
 {% endblock content %}
