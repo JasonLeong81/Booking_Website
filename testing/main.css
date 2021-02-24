@@ -1,0 +1,228 @@
+/* margin (tom/bottom will overlap) : top right bottom left
+   padding : clockwise
+   border : clockwise
+
+   em : relative to its parent
+   rem : relative to root
+   vh,vw : viewport sizes
+   % : relative to parent
+
+    !important (ignore all previous and later styling, only current)
+    top (move certain number of px down from parent)
+   display properties:
+                        block (takes up full width)
+                        inline (span, or only take up spaces that is needed no more no less)
+                        inline-block (can alter width and height)
+    Grid:
+        display: grid;
+
+    Flexbox:
+        For flex-direction: column (main axis (x-axis) and cross axis (y-axis)) and vice versa for row
+        display: flex;
+        justify-content (for main axis) :
+        align-items (for items inside the flexbox cross axis (which depends on flex-direction as well)) :
+        flex-grow (how much to fill up when there is extra  space) (remaining space will be divided by whatever is set to flex-shrink/grow to accomodate the fexboxes):
+        flex-shrink (how much to shrink when there is not enough space) :
+        flex-basis (start growing from 0px)
+        order (which flexbox to come first) :
+        flex : grow shrink basis (shorthand)
+
+    position:
+        absolute (its there but its as if its not there, it can overlap others but others cant) (better used when parent has relative position)
+        relative (move according to its static/original position)
+        static (default, first come first served)
+        fixed (based on entire html, stay on same page when you roll)
+        sticky (combination of relative and fixed)
+
+    linear-gradient(to right top,blue 75%,green)
+    radial-gradient(blue 60%,green)
+
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.container{
+    width: 100vw;
+    height: 100vh;
+    background: #42455a;
+}
+
+.menu ul{
+    display: inline-flex;
+    margin: 50px;
+}
+
+.menu ul li{
+    list-style:none;
+    margin: 0 20px;
+    color: #b2b1b1b;
+    cursor: pointer;
+}
+
+.logo img{
+    width: 30px;
+    margin: -7px 48px;
+}
+
+.active{
+    color: #19dafa;
+}
+
+.signup-btn{
+    top : 40px;
+    right: 80px;
+    position: absolute;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    background-image: linear-gradient(#42455a,#42455a), radial-gradient(circle at top left,#fd00da,#19d7f8);
+    background-origin:border-box; /* The background-origin property specifies the origin position (the background positioning area) of a background image. */
+    background-clip:content-box,border-box; /* The background-clip property defines how far the background (color or image) should extend within an element. */
+}
+
+.signup-btn span{
+    display: block;
+    padding: 8px 22px;
+}
+
+.banner{
+    width: 80%;
+    height:70%;
+    top:25%;
+    left: 130px;
+    position: absolute;
+    color: white;
+}
+
+.App-text{
+    width: 50%;
+    float: left;
+}
+
+.App-text h1{
+    font-size: 43px;
+    width: 640px;
+    position: relative;
+    margin-left: 40px;
+}
+
+.App-text p{
+    font-size: 15px;
+    width: 650px;
+    margin: 30px 0 30px 40px;
+    line-height: 25px;
+    color: #919191;
+}
+
+.app-picture{
+    width: 50%;
+    float:right;
+}
+
+.app-picture img{
+    width: 100%;
+    margin-top:-20px;
+    padding-left:50px;
+}
+
+.play-btn{
+    margin-left: 40px;
+    display: inline-flex;
+}
+
+.play-btn-inner{
+    height: 50px;
+    width: 50px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background-image: linear-gradient(#42455a,#42455a), radial-gradient(circle at top left,#fd00da,#19d7f8);
+    background-origin:border-box; /* The background-origin property specifies the origin position (the background positioning area) of a background image. */
+    background-clip:content-box,border-box; /* The background-clip property defines how far the background (color or image) should extend within an element. */
+    text-align:center;
+}
+
+.play-btn-inner .fa{
+    padding:18px 0;
+    cursor:pointer;
+    font-size:13px;
+}
+
+small{
+    margin: auto 20px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #19dafa;
+    letter-spacing: 3px;
+}
+
+.quick-links{
+    left:0;
+    bottom:0;
+    position:absolute;
+    background:linear-gradient(to right,#db1bf6,#19d7f8);
+}
+
+.quick-links ul{
+    display: inline-flex;
+    margin: 30px auto;
+    text-align:center;
+}
+
+.quick-links ul li{
+    list-style:none;
+    margin: 0 50px;
+    cursor:pointer;
+}
+
+.quick-links ul li .fa{
+    font-size:25px;
+    color:white;
+}
+
+.quick-links ul li p{
+    font-size:10px;
+    color:white;
+    margin-top:15px;
+}
+
+.social-icons{
+    right:72px;
+    bottom:35px;
+    position:absolute;
+}
+
+.social-icons ul li{
+    list-style:none;
+    margin-top:15px;
+    text-align:center;
+}
+
+.social-icons ul li a{
+    color: #999;
+    border-radius: 50%;
+    border: 1px solid #999;
+    padding: 5px;
+    display: block;
+}
+
+
+.bla{
+    color:green;
+}
+
+.b{
+    top : 40px;
+    right: 80px;
+    position: absolute;
+    border: 5px solid transparent;
+    border-radius: 20px;
+    background-image: linear-gradient(red,red), radial-gradient(circle at top left,#fd00da,#19d7f8);
+    background-origin:border-box;
+    background-clip:content-box,border-box;
+}
+
