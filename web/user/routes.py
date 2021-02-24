@@ -277,8 +277,10 @@ def covid():
                 # print(strings[i]['datetime'][:10],INPUT)
                 if strings[i]['datetime'][:10] == INPUT:
                     correct_link_id = i
-        e = f'If there is an error, please go to the link: {url}\n'
-        default1.append(e)
+
+        # e = f'If there is an error, please go to the link: {url}\n'
+        # default1.append(e) # this has been replaced by javascript
+
         # print(f'If there is an error, please go to the link: {url}')
         # print(url)
         # print()
@@ -350,7 +352,7 @@ def covid():
     # print()
     # print('\nFor results today, you do not need to enter the date. Simply skip by pressing enter. For results on other days, please specify the date in the form yyyy-mm-dd.')
     # print()
-    default1.append('\nFor results today, you do not need to enter the date. Simply skip by pressing enter. For results on other days, please specify the date in the form yyyy-mm-dd.\n')
+    default1.append('For results today, just click the "Find" button. For past results, please specify the desired date in the form yyyy-mm-dd.')
 
     # ans = input('Enter date: ')
     ans = ''
@@ -384,7 +386,7 @@ def covid():
             except:
                 break
     else:
-        error.append('\nUnavailable')
+        error.append('Sorry, no results have been found :(')
     # print(results)
     print("ans:",ans)
     return render_template('random_functions.html',error=error,results=results,default1=default1,default2=default2,today=str(datetime.today().date()))

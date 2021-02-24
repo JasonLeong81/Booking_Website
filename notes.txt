@@ -33,7 +33,16 @@ db.session.commit()
 
 
 
-### booking more than 1 hour
+
 ### delete a user and delete all related fields
-###
+
+
+### admins
+email, password, username
+jason@gmail.com, 1, jason
+mum@gmail.com, 1, mum
+dad@gmail.com, 1, dad
+evelyn@gmail.com, 1, evelyn
+tiffany@gmail.com, 1, tiffany
+
 

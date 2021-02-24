@@ -8,8 +8,11 @@
             {% for i in default1 %}
                 {{i}}
                 <br>
+                <br>
             {% endfor %}
         {% endif %}
+        <span>If there is an error, please visit the original website at <a id='original-link' href="https://kpkesihatan.com/">https://kpkesihatan.com/</a>.<button style="margin-left:10px;" type="button" onclick="copy('https://kpkesihatan.com/')">Copy Link</button></span>
+        <br>
         <br>
         <form method="POST" action="">
             <label for="date">Date</label>
@@ -18,7 +21,7 @@
         </form>
     </div>
 
-    <div style="padding-top:50px;">
+    <div style="padding-top:20px;">
         {% if default2| length > 0 %}
             {% for i in default2 %}
                 {{i}}
@@ -27,17 +30,18 @@
         {% endif %}
         <br>
         {% if error| length > 0 %}
-            {% for i in error %}
-                {{i}}
+            {% for j in error %}
+                {{j}}
                 <br>
             {% endfor %}
         <br>
-        {% elif results| length >0 %}
-            {% for i in results %}
-                {{i}}
+        {% elif results| length > 0 %}
+            {% for c in results %}
+                {{c}}
                 <br>
             {% endfor %}
             <br>
         {% endif %}
     </div>
+<script src="{{url_for('static',filename='js/covid.js')}}"></script>
 {% endblock content %}
