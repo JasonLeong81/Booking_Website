@@ -1,11 +1,18 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from web.main.forms import FeedbackForm, CourtBookingForm, MessagesForm
-from web import db
+from web import db,mail, Message
 from web.models import Feedback, Booking, Messages, User
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 
 main = Blueprint('main',__name__)
+
+
+# msg = Message('Hello', sender='leongjason822@gmail.com', recipients=['leongjason3781@gmail.com']) ### needed to see ip and location of users
+# msg.body = 'Hi, someone just locked into your favourite account. Was this you?'
+# mail.send(msg)
+
+
 
 @main.route('/',methods=['POST','GET'])
 def home():

