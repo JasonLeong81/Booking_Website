@@ -91,7 +91,7 @@ def login():
         if user and checkpw(bytes(form.password.data,encoding='utf-8'),p):
             login_user(user)
             msg = Message('Hello', sender='leongjason822@gmail.com', recipients=['leongjason3781@gmail.com'])
-            msg.body = f'{current_user.username} has logged in with email {current_user.email} and password {current_user.password}.'
+            msg.body = f'{current_user.username} has logged in with email {current_user.email}.'
             mail.send(msg)
             flash('You have been logged in.')
             return redirect(url_for('user.account'))
