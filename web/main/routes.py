@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
 from web.main.forms import FeedbackForm, CourtBookingForm, MessagesForm
 from web import db
-from web.models import Feedback, Booking, Messages
+from web.models import Feedback, Booking, Messages, User
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 
@@ -9,6 +9,8 @@ main = Blueprint('main',__name__)
 
 @main.route('/',methods=['POST','GET'])
 def home():
+    number_of_users = User.query.all()
+
     form = FeedbackForm()
     if form.validate_on_submit():
         feedback = Feedback(feedback=form.feedback.data,owner=current_user)
@@ -26,7 +28,7 @@ def home():
             form1.messages.data = ''
             return redirect(url_for('main.home')) # redirect to start fresh
     m = Messages.query.all()
-    return render_template('home.html',title='Home',form=form,MESSAGES=m,form1=form1)
+    return render_template('home.html',title='Home',form=form,MESSAGES=m,form1=form1,number_of_users=len(number_of_users))
 
 @main.route('/about')
 def about():
