@@ -147,7 +147,6 @@ def delete_message():
 
 ##################### Random Functions ########################################
 @user.route('/covid',methods=['POST','GET'])
-@login_required
 def covid():
     error = []
     results = []
