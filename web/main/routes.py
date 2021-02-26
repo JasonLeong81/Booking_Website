@@ -122,6 +122,7 @@ def booking():
                         booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user)
                         db.session.add(booking)
                         db.session.commit()
+                        # print(raw_start_time)
                         flash('Your court has been booked.')
                         return redirect(url_for('user.account'))
                     else:

@@ -3,7 +3,7 @@ from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdateP
 from web.models import User, Feedback, Booking, Messages
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
-from web import mail, Message, db
+from web import mail, Message, db, main
 user = Blueprint('user',__name__)
 
 
@@ -129,7 +129,8 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return render_template('home.html',title='Home')
+    return redirect(url_for('user.login'))
+    # return redirect(url_for(main.home)) # why can't this work?
 
 @user.route('/messages')
 @login_required
