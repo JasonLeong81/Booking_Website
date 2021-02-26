@@ -90,6 +90,8 @@ def login():
         # if user and form.password.data == p:
         if user and checkpw(bytes(form.password.data,encoding='utf-8'),p):
             login_user(user)
+            db.session.query(User).filter(User.id == current_user.id).update({User.logged_in: 'True'})
+            db.session.commit()
             # msg = Message('Hello', sender='leongjason822@gmail.com', recipients=['leongjason3781@gmail.com'])
             # msg.body = f'{current_user.username} has logged in with email {current_user.email}.'
             # mail.send(msg)
@@ -128,6 +130,8 @@ def register():
 @user.route('/logout')
 @login_required
 def logout():
+    db.session.query(User).filter(User.id == current_user.id).update({User.logged_in: 'False'})
+    db.session.commit()
     logout_user()
     return redirect(url_for('user.login'))
     # return redirect(url_for(main.home)) # why can't this work?

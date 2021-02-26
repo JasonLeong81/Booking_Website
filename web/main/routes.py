@@ -18,6 +18,17 @@ main = Blueprint('main',__name__)
 def home():
     number_of_users = User.query.all()
 
+    list_of_online_people = []
+    try:
+        for i in number_of_users:
+            if len(list_of_online_people) > 10:
+                break
+            if i.logged_in == 'True' and i.id != current_user.id:
+                list_of_online_people.append(f'{i.username} is online!')
+    except:
+        pass
+
+
     form = FeedbackForm()
     if form.validate_on_submit():
         feedback = Feedback(feedback=form.feedback.data,owner=current_user)
@@ -35,7 +46,7 @@ def home():
             form1.messages.data = ''
             return redirect(url_for('main.home')) # redirect to start fresh
     m = Messages.query.all()
-    return render_template('home.html',title='Home',form=form,MESSAGES=m,form1=form1,number_of_users=len(number_of_users))
+    return render_template('home.html',title='Home',form=form,MESSAGES=m,form1=form1,number_of_users=len(number_of_users),list_of_online_people=list_of_online_people)
 
 @main.route('/about')
 def about():

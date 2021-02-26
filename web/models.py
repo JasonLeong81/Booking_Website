@@ -19,6 +19,7 @@ class User(db.Model,UserMixin):
     feedback = db.relationship('Feedback',backref='owner',lazy='subquery') # Feedback model # backref allows us to do Feedback.query.all()[0].owner.(attributes of owner who created the feedback) lazy (select,joined,dynamic,subquery) # uselist = True means we can have more than one child
     court_booking = db.relationship('Booking',backref='owner',lazy='subquery')
     messages = db.relationship('Messages',backref='owner',lazy='subquery')
+    logged_in = db.Column(db.String(10), nullable=True)
     # admin =
 
 class Feedback(db.Model,UserMixin):
