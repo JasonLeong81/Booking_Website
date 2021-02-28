@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>This is your meal plan. Enjoy :)</h1>
+    <form method="POST">
+        <label for="food">Food: </label>
+        <input type="text" placeholder="Chicken" name="food">
+        <br>
+<!--        <label for="meal">Meal: </label>-->
+<!--        <input type="text" placeholder="Breakfast" name="meal">-->
+    <label for="meal">Meal Type:</label>
+    <select name="meal" required>
+      <option value="Breakfast">Breakfast</option>
+      <option value="Lunch">Lunch</option>
+      <option value="Tea-Time">Tea-Time</option>
+      <option value="Dinner">Dinner</option>
+      <option value="Supper">Supper</option>
+    </select>
+        <br>
+        <label for="date">Date: </label>
+        <input type="date" name="date">
+        <br>
+        <input type="submit" name="add" value="Add">
+    </form>
+    <br>
+    <div>
+        {% for i in my %}
+            <label>Food: </label>{{i.Name}}
+            <br>
+            <label>Meal Type: </label>{{i.Type}}
+            <br>
+            <label>Date: </label>{{i.Date.date()}}
+            <br>
+            <label>Day: </label>{{i.Date.date().strftime('%A')}}
+            <br>
+            <form method="POST">
+                <input type="hidden" name="delete" value="{{i.id}}">
+                <input type="submit" name='submit' value="Delete">
+                <input type="submit" name='submit' value="Update">
+            </form>
+            <br>
+        {% endfor %}
+    </div>
+{% endblock content %}

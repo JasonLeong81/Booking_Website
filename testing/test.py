@@ -126,7 +126,12 @@ b = datetime.utcnow()
 #     db.session.delete(i)
 #     db.session.commit()
 from datetime import date
-print(date.today().strftime('%Y %m %d'))
+# print(date.today().strftime('%Y %m %d'))
+# aaa=[[1,date.today()], [2,date.today() + timedelta(days=1)], [3,date.today() - timedelta(days=1)]]
+# aaa = sorted(aaa, key=lambda x: x[-1])
+# # aaa = sorted(aaa)
+# for i in aaa:
+#     print(i)
 
 
 

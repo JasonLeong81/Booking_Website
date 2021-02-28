@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm
-from web.models import User, Feedback, Booking, Messages
+from web.models import User, Feedback, Booking, Messages, Grocery
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
 from web import mail, Message, db, main
+from datetime import datetime
+
 user = Blueprint('user',__name__)
 
 
@@ -396,8 +398,52 @@ def covid():
     return render_template('random_functions.html',error=error,results=results,default1=default1,default2=default2,today=str(datetime.today().date()))
 
 
+@user.route('/grocery',methods=['POST','GET'])
+@login_required
+def grocery():
+    if request.method == 'POST':
+        # if request.form['add'] == 'Add':
+        if 'add' in request.form:
+            temp = request.form['date'].split('-')
+            d_grocery = datetime(int(temp[0]),int(temp[1]),int(temp[2]))
+            # print(d_grocery,type(d_grocery))
+            newGrocery = Grocery(Name=request.form['food'],Type=request.form['meal'],Date=d_grocery,owner=current_user)
+            db.session.add(newGrocery)
+            db.session.commit()
+            flash('One meal has been created.')
 
+        if 'delete' in request.form:
+            if request.form['submit'] == 'Delete':
+                myGrocery_delete = Grocery.query.filter_by(id=int(request.form['delete'])).first()
+                db.session.delete(myGrocery_delete)
+                db.session.commit()
+                flash('One meal has been deleted.')
+            else:
+                old_name = Grocery.query.filter_by(id=int(request.form['delete'])).first().Name
+                session['old_name'] = old_name
+                session['id'] = int(request.form['delete'])
+                return redirect(url_for('user.update_grocery'))
+        return redirect(url_for('user.grocery'))
 
+    myGrocery = Grocery.query.filter_by(user_id=current_user.id)
+    # for i in myGrocery:
+    #     print(i,type(i))
+    myGrocery = sorted(myGrocery,key=lambda x:x.Date)
+    return render_template('Grocery.html',title='MyGrocery',my=myGrocery)
+
+@user.route('/update_grocery',methods=['POST','GET'])
+@login_required
+def update_grocery():
+    # strf(A) is to make it in english
+    if request.method == 'POST':
+        new_name = request.form['new_name'].strip()
+        db.session.query(Grocery).filter(Grocery.id == session['id']).update({Grocery.Name: f'{new_name}'})  # updating rows in database
+        db.session.commit()
+        flash('One meal has been updated.')
+        session.pop('old_name',None)
+        session.pop('id', None)
+        return redirect(url_for('user.grocery'))
+    return render_template('Update_Grocery.html',title='UpdateGrocery',old_name=session['old_name'])
 
 
 
