@@ -435,6 +435,14 @@ def grocery():
             return redirect(url_for('user.grocery')) # counter must be 1 to execute this line
 
     if request.method == 'POST':
+        if 'Add to My Meals' in request.form:
+            item_to_copy_id = request.form['copy']
+            item_to_copy_ = Grocery.query.filter_by(id=item_to_copy_id).first()
+            add_item_to_my_meal = Grocery(Name=item_to_copy_.Name,Type=item_to_copy_.Type,Date=item_to_copy_.Date,owner=current_user)
+            db.session.add(add_item_to_my_meal)
+            db.session.commit()
+            # return redirect(url_for('user.grocery'))
+
         if 'search' in request.form:
             if request.form['username']:
                 if len(request.form['username']) > 0:

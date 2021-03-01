@@ -9,13 +9,13 @@
 <!--        <input type="email" id="email" name="email">-->
         <label for="username">Friend's name: </label>
         <input type="text" id="username" name="username">
-`       <input type="submit" name='search' value="Search">
+        <input type="submit" name='search' value="Search">
     </form>
     <br>
     <br>
 
     {% if friend[0] %} <!-- friend will not work, dont know why it is even returning an objec -->
-        <h2>This is {{friend[0].owner.username}}'s meal plans.</h2>
+        <h2>These are {{friend[0].owner.username}}'s upcoming meals!</h2>
         {% for i in friend %}
             <label>Food: </label>{{i.Name}}
             <br>
@@ -24,6 +24,11 @@
             <label>Date: </label>{{i.Date.date()}}
             <br>
             <label>Day: </label>{{i.Date.date().strftime('%A')}}
+            <br>
+            <form method="POST" action="">
+                <input type="hidden" name="copy" value="{{i.id}}">
+                <input type="submit" name="Add to My Meals" value="Add to My Meals">
+            </form>
             <br>
         {% endfor %}
     {% else %}
