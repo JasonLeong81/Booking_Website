@@ -401,6 +401,11 @@ def covid():
 @user.route('/grocery',methods=['POST','GET'])
 @login_required
 def grocery():
+    global friend_grocery, friend
+    friend_grocery = None
+    friend = None
+
+    counter = 0
     if request.method == 'POST':
         # if request.form['add'] == 'Add':
         if 'add' in request.form:
@@ -411,6 +416,7 @@ def grocery():
             db.session.add(newGrocery)
             db.session.commit()
             flash('One meal has been created.')
+            counter += 1
 
         if 'delete' in request.form:
             if request.form['submit'] == 'Delete':
@@ -418,18 +424,33 @@ def grocery():
                 db.session.delete(myGrocery_delete)
                 db.session.commit()
                 flash('One meal has been deleted.')
+                counter += 1
             else:
                 old_name = Grocery.query.filter_by(id=int(request.form['delete'])).first().Name
                 session['old_name'] = old_name
                 session['id'] = int(request.form['delete'])
                 return redirect(url_for('user.update_grocery'))
-        return redirect(url_for('user.grocery'))
+        if counter == 1:
+            counter = 0
+            return redirect(url_for('user.grocery')) # counter must be 1 to execute this line
+
+    if request.method == 'POST':
+        if 'search' in request.form:
+            if request.form['username']:
+                if len(request.form['username']) > 0:
+                    search = request.form['username'].strip()
+                    friend = User.query.filter_by(username=search).first()
+                    if not friend:
+                        flash('Could not find your friend. Please make sure his/her name is entered correctly.')
+                    else:
+                        friend_grocery = Grocery.query.filter_by(user_id=friend.id)
+
 
     myGrocery = Grocery.query.filter_by(user_id=current_user.id)
     # for i in myGrocery:
     #     print(i,type(i))
     myGrocery = sorted(myGrocery,key=lambda x:x.Date)
-    return render_template('Grocery.html',title='MyGrocery',my=myGrocery)
+    return render_template('Grocery.html',title='MyGrocery',my=myGrocery,friend=friend_grocery,friend_name=friend)
 
 @user.route('/update_grocery',methods=['POST','GET'])
 @login_required

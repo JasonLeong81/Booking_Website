@@ -1,15 +1,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>This is your meal plan. Enjoy :)</h1>
+    <h1>Plan your meals here. Enjoy :)</h1>
+    <hr>
+    <br>
+    <form method="POST">
+<!--        <label for="email">Friend's email: </label>-->
+<!--        <input type="email" id="email" name="email">-->
+        <label for="username">Friend's name: </label>
+        <input type="text" id="username" name="username">
+`       <input type="submit" name='search' value="Search">
+    </form>
+    <br>
+    <br>
+
+    {% if friend[0] %} <!-- friend will not work, dont know why it is even returning an objec -->
+        <h2>This is {{friend[0].owner.username}}'s meal plans.</h2>
+        {% for i in friend %}
+            <label>Food: </label>{{i.Name}}
+            <br>
+            <label>Meal Type: </label>{{i.Type}}
+            <br>
+            <label>Date: </label>{{i.Date.date()}}
+            <br>
+            <label>Day: </label>{{i.Date.date().strftime('%A')}}
+            <br>
+        {% endfor %}
+    {% else %}
+        {% if friend %}
+            <h2>{{friend_name.username}} does not have any meal plans yet.</h2>
+        {% else %}
+            <h2>See what your friends are eating now!</h2>
+        {% endif %}
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <hr>
+
+
+
+
     <form method="POST">
         <label for="food">Food: </label>
-        <input type="text" placeholder="Chicken" name="food">
+        <input type="text" placeholder="Chicken" name="food" id="food">
         <br>
 <!--        <label for="meal">Meal: </label>-->
 <!--        <input type="text" placeholder="Breakfast" name="meal">-->
     <label for="meal">Meal Type:</label>
-    <select name="meal" required>
+    <select name="meal" required id="meal">
       <option value="Breakfast">Breakfast</option>
       <option value="Lunch">Lunch</option>
       <option value="Tea-Time">Tea-Time</option>
@@ -18,7 +57,7 @@
     </select>
         <br>
         <label for="date">Date: </label>
-        <input type="date" name="date">
+        <input type="date" name="date" id="date">
         <br>
         <input type="submit" name="add" value="Add">
     </form>
