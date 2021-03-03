@@ -18,21 +18,22 @@
 
     {% if friend[0] %} <!-- friend will not work, dont know why it is even returning an objec -->
         <h2>These are {{friend[0].owner.username}}'s upcoming meals!</h2>
-        {% for i in friend %}
-            <label>Food: </label>{{i.Name}}
+        <form method="POST" action="">
+            {% for i in friend %}
+                <label>Food: </label>{{i.Name}}
+                <br>
+                <label>Meal Type: </label>{{i.Type}}
+                <br>
+                <label>Date: </label>{{i.Date.date()}}
+                <br>
+                <label>Day: </label>{{i.Date.date().strftime('%A')}}
+                <br>
+                <input type="checkbox" name="copy" value="{{i.id}}">
             <br>
-            <label>Meal Type: </label>{{i.Type}}
-            <br>
-            <label>Date: </label>{{i.Date.date()}}
-            <br>
-            <label>Day: </label>{{i.Date.date().strftime('%A')}}
-            <br>
-            <form method="POST" action="">
-                <input type="hidden" name="copy" value="{{i.id}}">
-                <input type="submit" name="Add to My Meals" value="Add to My Meals">
-            </form>
-            <br>
-        {% endfor %}
+            {% endfor %}
+        <br>
+        <input type="submit" name="Add to My Meals" value="Add to My Meals">
+        </form>
     {% else %}
         {% if friend %}
             <h2>{{friend_name.username}} does not have any meal plans yet.</h2>
