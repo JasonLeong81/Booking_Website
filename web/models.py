@@ -52,6 +52,7 @@ class Grocery(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     Name = db.Column(db.String(100),nullable=False)
     Type = db.Column(db.String(10),nullable=True)
+    Type_id = db.Column(db.Integer,nullable=True)
     Date = db.Column(db.DateTime,nullable=False) # same as datetime in python
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
 

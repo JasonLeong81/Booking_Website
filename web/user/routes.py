@@ -398,6 +398,10 @@ def covid():
     return render_template('random_functions.html',error=error,results=results,default1=default1,default2=default2,today=str(datetime.today().date()))
 
 
+def change(INPUT):
+    d = {'Breakfast':1,'Lunch':2,'Tea-Time':3,'Dinner':4,'Supper':5}
+    return d[INPUT]
+
 @user.route('/grocery',methods=['POST','GET'])
 @login_required
 def grocery():
@@ -412,7 +416,7 @@ def grocery():
             temp = request.form['date'].split('-')
             d_grocery = datetime(int(temp[0]),int(temp[1]),int(temp[2]))
             # print(d_grocery,type(d_grocery))
-            newGrocery = Grocery(Name=request.form['food'],Type=request.form['meal'],Date=d_grocery,owner=current_user)
+            newGrocery = Grocery(Name=request.form['food'],Type=request.form['meal'],Type_id =change(str(request.form['meal'])),Date=d_grocery,owner=current_user)
             db.session.add(newGrocery)
             db.session.commit()
             flash('One meal has been created.')
@@ -438,7 +442,7 @@ def grocery():
         if 'Add to My Meals' in request.form:
             item_to_copy_id = request.form['copy']
             item_to_copy_ = Grocery.query.filter_by(id=item_to_copy_id).first()
-            add_item_to_my_meal = Grocery(Name=item_to_copy_.Name,Type=item_to_copy_.Type,Date=item_to_copy_.Date,owner=current_user)
+            add_item_to_my_meal = Grocery(Name=item_to_copy_.Name,Type=item_to_copy_.Type,Type_id =item_to_copy_.Type_id ,Date=item_to_copy_.Date,owner=current_user)
             db.session.add(add_item_to_my_meal)
             db.session.commit()
             # return redirect(url_for('user.grocery'))
@@ -457,7 +461,7 @@ def grocery():
     myGrocery = Grocery.query.filter_by(user_id=current_user.id)
     # for i in myGrocery:
     #     print(i,type(i))
-    myGrocery = sorted(myGrocery,key=lambda x:x.Date)
+    myGrocery = sorted(myGrocery,key=lambda x:(x.Date,x.Type_id))
     return render_template('Grocery.html',title='MyGrocery',my=myGrocery,friend=friend_grocery,friend_name=friend)
 
 @user.route('/update_grocery',methods=['POST','GET'])

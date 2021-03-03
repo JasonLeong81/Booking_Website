@@ -133,8 +133,10 @@ from datetime import date
 # for i in aaa:
 #     print(i)
 
-
-
+def change(INPUT):
+    d = {'Breakfast':1,'Lunch':2,'Tea-Time':3,'Dinner':4,'Supper':5}
+    return d[INPUT]
+# print(change('Breakfast'))
 
 
 
