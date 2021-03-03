@@ -10,6 +10,7 @@
     {% else %}
         <title>Unknown</title>
     {% endif %}
+
 </head>
 <body>
 
@@ -35,6 +36,7 @@
         <a href="{{url_for('user.login')}}" >Login</a>
         <a href="{{url_for('user.covid')}}">Covid</a>
     {% endif %}
+<!--        <img src="{{url_for('static',filename='/pictures/background.jpg')}}">-->
 
   {% block content %}
 
@@ -43,6 +45,7 @@
 
 <!--  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
 <!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+<!--    <link rel= "stylesheet" type= "text/css" href= "{{url_for('static',filename='/styles/home.css')}}">-->
 
 </body>
 </html>
