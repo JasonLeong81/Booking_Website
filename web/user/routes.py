@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm
-from web.models import User, Feedback, Booking, Messages, Grocery
+from web.models import User, Feedback, Booking, Messages, Grocery, Recipes
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
 from web import mail, Message, db, main
@@ -480,7 +480,33 @@ def update_grocery():
     return render_template('Update_Grocery.html',title='UpdateGrocery',old_name=session['old_name'])
 
 
+@user.route('/recipes',methods=['POST','GET'])
+@login_required
+def recipes():
+    myrecipes = []
+    Category_Title = ''
+    # Global variables are special. If you try to assign to a variable a = value inside of a function, it creates a new local variable inside the function, even if there is a global variable with the same name.To instead access the global variable, add a global statement inside the function
+    if request.method == 'POST':
+        if 'create' in request.form:
+            new_recipe = Recipes(Name=request.form['Name'].strip(),Category=request.form['Category'],Ingredients=request.form['Ingredients'].strip(),owner=current_user)
+            db.session.add(new_recipe)
+            db.session.commit()
+            return redirect(url_for('user.recipes'))
 
+        if 'delete' in request.form:
+            delete_recipe = Recipes.query.filter_by(id=int(request.form['delete-recipe'])).first()
+            db.session.delete(delete_recipe)
+            db.session.commit()
+            return redirect(url_for('user.recipes'))
+
+        if 'see' in request.form:
+            if request.form['Category1'] == 'All':
+                myrecipes = Recipes.query.filter_by(user_id=current_user.id)
+            else:
+                myrecipes = Recipes.query.filter_by(Category=request.form['Category1'])
+            Category_Title = request.form['Category1']
+    options = db.session.query(Recipes.Category).distinct() # selecing distinct values in Category column of table Recipes
+    return render_template("recipes.html",title='MyRecipes',myrecipes=myrecipes,options=options,ct=Category_Title)
 
 
 

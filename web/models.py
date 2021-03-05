@@ -20,6 +20,7 @@ class User(db.Model,UserMixin):
     court_booking = db.relationship('Booking',backref='owner',lazy='subquery')
     messages = db.relationship('Messages',backref='owner',lazy='subquery')
     grocery = db.relationship('Grocery',backref='owner',lazy='subquery')
+    recipes = db.relationship('Recipes',backref='owner',lazy='subquery')
 
     logged_in = db.Column(db.String(10), nullable=True)
     # admin =
@@ -54,6 +55,13 @@ class Grocery(db.Model,UserMixin):
     Type = db.Column(db.String(10),nullable=True)
     Type_id = db.Column(db.Integer,nullable=True)
     Date = db.Column(db.DateTime,nullable=False) # same as datetime in python
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
+class Recipes(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    Name = db.Column(db.String(100),nullable=False)
+    Category = db.Column(db.String(100),nullable=False)
+    Ingredients = db.Column(db.String(100),nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
 
 
