@@ -33,19 +33,23 @@
     <br>
     <br>
     <div>
-        <h3>{{ct}}</h3>
         {% for i in myrecipes %}
-            Name: {{i.Name}}
+            <h2>Category: <u>{{i[0]}}</u></h2>
             <br>
-            Ingredient: {{i.Ingredients}}
-            <br>
-            Category: {{i.Category}}
-            <br>
-            <form method="POST">
-                <input type="hidden" value="{{i.id}}" name="delete-update-recipe">
-                <input type="submit" value="Delete" name="delete">
-                <input type="submit" value="Update" name="update">
-            </form>
+            {% for j in i[1] %}
+                Name: {{j.Name}}
+                <br>
+                Ingredient: {{j.Ingredients}}
+                <br>
+                Category: {{j.Category}}
+                <br>
+                <form method="POST">
+                    <input type="hidden" value="{{i[1].id}}" name="delete-update-recipe">
+                    <input type="submit" value="Delete" name="delete">
+                    <input type="submit" value="Update" name="update">
+                </form>
+                <br>
+            {% endfor %}
             <br>
         {% endfor %}
     </div>
