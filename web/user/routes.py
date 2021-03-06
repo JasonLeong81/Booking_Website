@@ -394,7 +394,7 @@ def covid():
     else:
         error.append('Sorry, no results have been found :(')
     # print(results)
-    print("ans:",ans)
+    # print("ans:",ans)
     return render_template('random_functions.html',error=error,results=results,default1=default1,default2=default2,today=str(datetime.today().date()))
 
 
@@ -488,26 +488,49 @@ def recipes():
     # Global variables are special. If you try to assign to a variable a = value inside of a function, it creates a new local variable inside the function, even if there is a global variable with the same name.To instead access the global variable, add a global statement inside the function
     if request.method == 'POST':
         if 'create' in request.form:
-            new_recipe = Recipes(Name=request.form['Name'].strip(),Category=request.form['Category'],Ingredients=request.form['Ingredients'].strip(),owner=current_user)
+            new_recipe = Recipes(Name=request.form['Name'].strip(),Category=request.form['Category'].strip(),Ingredients=request.form['Ingredients'].strip(),owner=current_user)
             db.session.add(new_recipe)
             db.session.commit()
             return redirect(url_for('user.recipes'))
 
         if 'delete' in request.form:
-            delete_recipe = Recipes.query.filter_by(id=int(request.form['delete-recipe'])).first()
+            delete_recipe = Recipes.query.filter_by(id=int(request.form['delete-update-recipe'])).first()
             db.session.delete(delete_recipe)
             db.session.commit()
             return redirect(url_for('user.recipes'))
 
+        if 'update' in request.form:
+            session['update_recipe_id'] = int(request.form['delete-update-recipe'])
+            return redirect(url_for('user.update_recipes'))
+
         if 'see' in request.form:
             if request.form['Category1'] == 'All':
-                myrecipes = Recipes.query.filter_by(user_id=current_user.id)
+                myrecipes = Recipes.query.filter_by(user_id=current_user.id) ### getting all recipes of current_user
+
+
+                # for i in db.session.query(Recipes.Category).distinct(): ### getting all distinct categories of current user
+                    # print(i[0])
+                #     Category_Title.append(i)
+
+                myrecipes = sorted(myrecipes, key=lambda x: (x.Category,x.Name))
+                Category_Title = 'All'
             else:
                 myrecipes = Recipes.query.filter_by(Category=request.form['Category1'])
-            Category_Title = request.form['Category1']
+                Category_Title = request.form['Category1']
     options = db.session.query(Recipes.Category).distinct() # selecing distinct values in Category column of table Recipes
     return render_template("recipes.html",title='MyRecipes',myrecipes=myrecipes,options=options,ct=Category_Title)
 
+@user.route('/update_recipes',methods=['POST','GET'])
+@login_required
+def update_recipes():
+    if request.method == 'POST':
+        if 'update' in request.form:
+            db.session.query(Recipes).filter(Recipes.id == session['update_recipe_id']).update({Recipes.Name: request.form['update_Name'].strip(),Recipes.Ingredients:request.form['update_Ingredient'].strip(),Recipes.Category:request.form['update_Category'].strip()})
+            db.session.commit()
+            session.pop('update_recipe_id',None)
+            return redirect(url_for('user.recipes'))
+    recipe_to_update = Recipes.query.filter_by(id=session['update_recipe_id']).first()
+    return render_template('Update_recipe.html', title='UpdateRecipe', recipe_to_update=recipe_to_update)
 
 
 
