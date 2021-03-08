@@ -11,7 +11,7 @@
             <div>{{i.feedback}}</div>
             <form method="POST" action="{{url_for('main.delete_Feedback') }}">
                 <input type="hidden" name="id_feedback" value="{{i.id}}">
-                <input type="submit" name="delete_feedback" value="Delete">
+                <input class="btn btn-danger" type="submit" name="delete_feedback" value="Delete">
             </form>
             <br/>
         {% endfor %}
@@ -24,7 +24,7 @@
             <div>Court: {{i.court}}</div>
             <form method="POST" action="{{url_for('main.delete_court_booking') }}">
                 <input type="hidden" name="id_court" value="{{i.id}}">
-                <input type="submit" name="delete_court_reservation" data-time="{{i.time}}" data-court="{{i.court}}" value="Delete">
+                <input class="btn btn-danger" type="submit" name="delete_court_reservation" data-time="{{i.time}}" data-court="{{i.court}}" value="Delete">
             </form>
             <br/>
         {% endfor %}
@@ -34,46 +34,46 @@
     <h1><u>Change My Account Information</u></h1>
     <form method="POST" action="">
         {{form.hidden_tag()}}
-        <div>
-            {{form.current_email.label}}
-            {{form.current_email}}
+        <div style="width:45%;" class="input-group mb-3">
+            {{form.current_email.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.current_email(class="form-control")}}
+        </div>
+        <div style="width:45%;" class="input-group mb-3">
+            {{form.new_email.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.new_email(class="form-control")}}
         </div>
         <div>
-            {{form.new_email.label}}
-            {{form.new_email}}
-        </div>
-        <div>
-            {{form.submit}}
+            {{form.submit(class="btn btn-outline-success")}}
         </div>
     </form>
 
     <form method="POST" action="">
         {{form1.hidden_tag()}}
-        <div>
-            {{form1.current_password.label}}
-            {{form1.current_password}}
+        <div style="width:45%;" class="input-group mb-3">
+            {{form1.current_password.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form1.current_password(class="form-control")}}
+        </div>
+        <div style="width:45%;" class="input-group mb-3">
+            {{form1.new_password.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form1.new_password(class="form-control")}}
         </div>
         <div>
-            {{form1.new_password.label}}
-            {{form1.new_password}}
-        </div>
-        <div>
-            {{form1.submit}}
+            {{form1.submit(class="btn btn-outline-success")}}
         </div>
     </form>
 
     <form method="POST" action="">
         {{form2.hidden_tag()}}
-        <div>
-            {{form2.current_username.label}}
-            {{form2.current_username}}
+        <div style="width:45%;" class="input-group mb-3">
+            {{form2.current_username.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form2.current_username(class="form-control")}}
+        </div>
+        <div style="width:45%;" class="input-group mb-3">
+            {{form2.new_username.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form2.new_username(class="form-control")}}
         </div>
         <div>
-            {{form2.new_username.label}}
-            {{form2.new_username}}
-        </div>
-        <div>
-            {{form2.submit}}
+            {{form2.submit(class="btn btn-outline-success")}}
         </div>
     </form>
 

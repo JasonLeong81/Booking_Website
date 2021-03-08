@@ -7,12 +7,23 @@
     <form method="POST">
 <!--        <label for="email">Friend's email: </label>-->
 <!--        <input type="email" id="email" name="email">-->
-        <label for="username">Friend's name: </label>
-        <input type="text" id="username" name="username">
-        <input type="submit" name='search' value="Search">
+<!--        <label for="username">Friend's name: </label>-->
+<!--        <input type="text" id="username" name="username">-->
+
+
+    <div class="form-floating mb-3" style="width:25%;">
+      <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Jason">
+      <label for="floatingInput">Friend's Name: </label>
+    </div>
+        <input type="submit" name='search' value="Search" class="btn btn-outline-success">
+
     </form>
     <br>
     <br>
+
+
+
+
 
 
 
@@ -50,24 +61,31 @@
 
 
     <form method="POST">
-        <label for="food">Food: </label>
-        <input type="text" placeholder="Chicken" name="food" id="food">
+        <div style="width:35%;" class="input-group mb-3">
+            <label for="food" class="input-group-text" id="inputGroup-sizing-lg">Food: </label>
+            <input type="text" placeholder="Chicken" name="food" id="food" class="form-control">
+        </div>
         <br>
-<!--        <label for="meal">Meal: </label>-->
-<!--        <input type="text" placeholder="Breakfast" name="meal">-->
-    <label for="meal">Meal Type:</label>
-    <select name="meal" required id="meal">
-      <option value="Breakfast">Breakfast</option>
-      <option value="Lunch">Lunch</option>
-      <option value="Tea-Time">Tea-Time</option>
-      <option value="Dinner">Dinner</option>
-      <option value="Supper">Supper</option>
-    </select>
+
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="meal">Meal Type:</label>
+                <select class="form-select" aria-label="Default select example" name="meal" required id="meal">
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Tea-Time">Tea-Time</option>
+                  <option value="Dinner">Dinner</option>
+                  <option value="Supper">Supper</option>
+                </select>
+        </div>
         <br>
-        <label for="date">Date: </label>
-        <input type="date" name="date" id="date">
+
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="date">Date: </label>
+            <input class="form-control" type="date" name="date" id="date">
+        </div>
         <br>
-        <input type="submit" name="add" value="Add">
+
+        <input type="submit" name="add" value="Add" class="btn btn-outline-success">
     </form>
     <br>
     <div>
@@ -82,10 +100,12 @@
             <br>
             <form method="POST">
                 <input type="hidden" name="delete" value="{{i.id}}">
-                <input type="submit" name='submit' value="Delete">
-                <input type="submit" name='submit' value="Update">
+                <input class="btn btn-danger" type="submit" name='submit' value="Delete">
+                <input class="btn btn-success" type="submit" name='submit' value="Update">
             </form>
             <br>
         {% endfor %}
     </div>
 {% endblock content %}
+
+

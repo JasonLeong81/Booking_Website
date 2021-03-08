@@ -4,24 +4,24 @@
     <h1>Booking</h1>
 <form method="POST" action="">
     {{form.hidden_tag()}}
-    <div>
-        <label for="date">Date</label>
-        <input type="datetime" name="date" value="2021-01-01">
+    <div style="width:35%;" class="input-group mb-3">
+        <label class="input-group-text" id="inputGroup-sizing-lg" for="date">Date</label>
+        <input class="form-control" type="datetime" name="date" value="2021-01-01">
+    </div>
+    <div style="width:35%;" class="input-group mb-3">
+        <label class="input-group-text" id="inputGroup-sizing-lg" for="time">Start Time</label>
+        <input class="form-control" type="time" name="start_time" value="16:50">
+    </div>
+    <div style="width:35%;" class="input-group mb-3">
+        <label class="input-group-text" id="inputGroup-sizing-lg" for="time">End Time</label>
+        <input class="form-control" type="time" name="end_time" value="17:50">
+    </div>
+    <div style="width:35%;" class="input-group mb-3">
+        {{form.court.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+        {{form.court(value=1,class="form-control")}}
     </div>
     <div>
-        <label for="time">Start Time</label>
-        <input type="time" name="start_time" value="16:50">
-    </div>
-    <div>
-        <label for="time">End Time</label>
-        <input type="time" name="end_time" value="17:50">
-    </div>
-    <div>
-        {{form.court.label}}
-        {{form.court(value=1)}}
-    </div>
-    <div>
-        {{form.submit}}
+        {{form.submit(class="btn btn-outline-success")}}
     </div>
 </form>
 {% endblock content %}

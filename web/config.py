@@ -16,4 +16,8 @@ class Config:
 
 
 # no module names psycopg2 -> pip install psycopg2
-#
+
+
+### Accounts ###
+# xxx@gmail.com
+# x@gmail.com

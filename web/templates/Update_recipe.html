@@ -6,16 +6,25 @@
     <br>
 
     <form method="POST">
-        <label for="update_Name">Name</label>
-        <input type="text" name="update_Name" id="update_Name" value="{{recipe_to_update.Name}}" required>
+        <div style="width:45%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="update_Name">Name</label>
+            <input class="form-control" type="text" name="update_Name" id="update_Name" value="{{recipe_to_update.Name}}" required>
+        </div>
         <br>
-        <label for="update_Ingredient">Ingredient</label>
-        <input type="text" name="update_Ingredient" id="update_Ingredient" value="{{recipe_to_update.Ingredients}}" required>
+
+        <div style="width:45%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="update_Ingredient">Ingredient</label>
+            <input class="form-control" type="text" name="update_Ingredient" id="update_Ingredient" value="{{recipe_to_update.Ingredients}}" required>
+        </div>
         <br>
-        <label for="update_Category">Category</label>
-        <input type="text" name="update_Category" id="update_Category" value="{{recipe_to_update.Category}}" required>
+
+        <div style="width:45%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="update_Category">Category</label>
+            <input class="form-control" type="text" name="update_Category" id="update_Category" value="{{recipe_to_update.Category}}" required>
+        </div>
         <br>
-        <input type="submit" value="Update" name="update">
+
+        <input type="submit" value="Update" name="update" class="btn btn-outline-success">
     </form>
 
 {% endblock content %}

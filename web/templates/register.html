@@ -5,24 +5,24 @@
 <div>
     <form method="POST" action="">
         {{form.hidden_tag()}}
-        <div>
-            {{form.username.label}}
-            {{form.username}}
+        <div style="width:45%;" class="input-group mb-3">
+            {{form.username.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.username(class="form-control")}}
+        </div>
+        <div style="width:45%;" class="input-group mb-3">
+            {{form.email.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.email(class="form-control")}}
+        </div>
+        <div style="width:45%;" class="input-group mb-3">
+            {{form.password.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.password(class="form-control")}}
+        </div>
+        <div style="width:45%;" class="input-group mb-3">
+            {{form.confirm_password.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.confirm_password(class="form-control")}}
         </div>
         <div>
-            {{form.email.label}}
-            {{form.email}}
-        </div>
-        <div>
-            {{form.password.label}}
-            {{form.password}}
-        </div>
-        <div>
-            {{form.confirm_password.label}}
-            {{form.confirm_password}}
-        </div>
-        <div>
-            {{form.submit}}
+            {{form.submit(class="btn btn-outline-success")}}
         </div>
     </form>
 </div>

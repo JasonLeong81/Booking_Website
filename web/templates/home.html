@@ -6,14 +6,12 @@
 {% if current_user.is_authenticated %}
     <form method="POST" action="">
         {{form.hidden_tag()}}
-            <div>
-                <div>
-                    {{form.feedback.label}}
-                    {{form.feedback}}
-                </div>
+            <div style="width:25%;" class="input-group mb-3">
+                {{form.feedback.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+                {{form.feedback(class="form-control")}}
             </div>
         <div>
-            {{form.submit}}
+            {{form.submit(class="btn btn-outline-success")}}
         </div>
     </form>
 
@@ -44,11 +42,11 @@
     </div>
         <form action="" method="POST" style="bottom:0; margin: 0% 0% 0% 0%;">
             {{form1.hidden_tag()}}
-                <div>
-                    {{form1.messages}}
+                <div style="width:15%;" class="input-group mb-3">
+                    {{form1.messages(class="input-group-text",id="inputGroup-sizing-lg")}}
                 </div>
             <div>
-                {{form1.submit}}
+                {{form1.submit(class="btn btn-outline-success")}}
             </div>
         </form>
     {% else %}

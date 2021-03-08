@@ -8,7 +8,7 @@
         <div>{{i.dates}}</div>
         <form method="POST" action="{{url_for('user.delete_message') }}">
             <input type="hidden" name="id_message" value="{{i.id}}">
-            <input type="submit" name="delete_message" value="Delete">
+            <input type="submit" name="delete_message" value="Delete" class="btn btn-danger">
         </form>
         <br>
     {% endfor %}

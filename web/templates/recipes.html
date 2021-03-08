@@ -4,30 +4,41 @@
     <h1>Create your own recipes here!</h1>
 
     <form method="POST">
-        <label for="Name">Name</label>
-        <input type="text" placeholder="Cheesecake" name="Name" id="Name" required>
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="Name">Name</label>
+            <input class="form-control" type="text" placeholder="Cheesecake" name="Name" id="Name" required>
+        </div>
         <br>
-        <label for="Ingredients">Ingredients</label>
-        <input type="text" placeholder="Cheese, Oreo" name="Ingredients" id="Ingredients" required>
+
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="Ingredients">Ingredients</label>
+            <input class="form-control" type="text" placeholder="Cheese, Oreo" name="Ingredients" id="Ingredients" required>
+        </div>
         <br>
-        <label for="Category">Category</label>
-        <input type="text" placeholder="Vegetables/Meat" name="Category" id="Category" required>
+
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="Category">Category</label>
+            <input class="form-control" type="text" placeholder="Vegetables/Meat" name="Category" id="Category" required>
+        </div>
         <br>
-        <input type="submit" name='create' value="Create">
+
+        <input type="submit" name='create' value="Create" class="btn btn-outline-success">
     </form>
     <br>
     <hr>
     <br>
 
     <form method="POST">
-        <label for="Category1">Choose a category</label>
-        <select name="Category1" id="Category1">
-            <option value="All">All</option>
-            {% for i in options %}
-                <option value="{{i.Category}}">{{i.Category}}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" name="see" value="See">
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="Category1">Choose a category</label>
+            <select class="form-select" aria-label="Default select example" name="Category1" id="Category1">
+                <option value="All">All</option>
+                {% for i in options %}
+                    <option value="{{i.Category}}">{{i.Category}}</option>
+                {% endfor %}
+            </select>
+        <input type="submit" name="see" value="See" class="btn btn-primary">
+        </div>
     </form>
 
     <br>
@@ -45,8 +56,8 @@
                 <br>
                 <form method="POST">
                     <input type="hidden" value="{{j.id}}" name="delete-update-recipe">
-                    <input type="submit" value="Delete" name="delete">
-                    <input type="submit" value="Update" name="update">
+                    <input class="btn btn-danger" type="submit" value="Delete" name="delete">
+                    <input class="btn btn-success" type="submit" value="Update" name="update">
                 </form>
                 <br>
             {% endfor %}

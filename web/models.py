@@ -13,6 +13,7 @@ def load_user(user_id):
 
 class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
+    # profile_picture = db.Column(db.Integer)
     username = db.Column(db.String(30), unique=True, nullable=False)  # string of max 20 len
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100),nullable=False)

@@ -483,6 +483,8 @@ def update_grocery():
 @user.route('/recipes',methods=['POST','GET'])
 @login_required
 def recipes():
+    global user_recipes
+    user_recipes = db.session.query(Recipes.Category).filter_by(user_id=current_user.id)
     myrecipes = [] # [ ['category name',[object1,object2,...,objectn]] ]
     # Global variables are special. If you try to assign to a variable a = value inside of a function, it creates a new local variable inside the function, even if there is a global variable with the same name.To instead access the global variable, add a global statement inside the function
     if request.method == 'POST':
@@ -503,21 +505,23 @@ def recipes():
             return redirect(url_for('user.update_recipes'))
 
         if 'see' in request.form:
+            user_recipes = Recipes.query.filter_by(user_id=current_user.id)  ### getting all recipes of current_user
             if request.form['Category1'] == 'All':
-                user_recipes = Recipes.query.filter_by(user_id=current_user.id) ### getting all recipes of current_user
 
-                for i in db.session.query(Recipes.Category).distinct(): ### getting all distinct categories of current user
+                for i in db.session.query(Recipes.Category).filter_by(user_id=current_user.id).distinct(): ### getting all distinct categories of current user
                     # print(i[0])
                     myrecipes.append( [i[0]] )
                 for j in range(len(myrecipes)):
-                    myrecipes[j].append(Recipes.query.filter_by(Category=myrecipes[j][0]))
+                    myrecipes[j].append(user_recipes.filter_by(Category=myrecipes[j][0]))
 
                 # myrecipes = sorted(myrecipes, key=lambda x: (x[1].Name))
 
             else:
-                myrecipes.append([request.form['Category1'],Recipes.query.filter_by(Category=request.form['Category1'])])
+                if Recipes.query.filter_by(user_id=current_user.id):
+                    if Recipes.query.filter_by(user_id=current_user.id).filter_by(Category=request.form['Category1']).first():
+                        myrecipes.append([request.form['Category1'],Recipes.query.filter_by(user_id=current_user.id,Category=request.form['Category1'])])
 
-    options = db.session.query(Recipes.Category).distinct() # selecing distinct values in Category column of table Recipes
+    options = user_recipes.distinct() # selecing distinct values in Category column of table Recipes
     return render_template("recipes.html",title='MyRecipes',myrecipes=myrecipes,options=options)
 
 @user.route('/update_recipes',methods=['POST','GET'])

@@ -3,8 +3,10 @@
 {% block content %}
     <h1>Update My Grocery</h1>
     <form method="POST">
-        <label for="new_name">Food</label>
-        <input type="text" id='new_name' name="new_name" value="{{old_name}} / ">
-        <input type="submit">
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="new_name">Food</label>
+            <input class="form-control" type="text" id='new_name' name="new_name" value="{{old_name}} / ">
+        </div>
+        <input type="submit" class="btn btn-outline-success">
     </form>
 {% endblock content %}
