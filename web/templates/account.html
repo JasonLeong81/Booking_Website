@@ -7,29 +7,79 @@
     <div>Email : {{r['data'].email}}</div>
     <br/>
     <div>Feedbacks Provided :
-        {% for i in feedbacks_provided %}
-            <div>{{i.feedback}}</div>
-            <form method="POST" action="{{url_for('main.delete_Feedback') }}">
-                <input type="hidden" name="id_feedback" value="{{i.id}}">
-                <input class="btn btn-danger" type="submit" name="delete_feedback" value="Delete">
-            </form>
-            <br/>
-        {% endfor %}
+{#<!--        {% for i in feedbacks_provided %}-->#}
+{#<!--            <div>{{i.feedback}}</div>-->#}
+{#<!--            <form method="POST" action="{{url_for('main.delete_Feedback') }}">-->#}
+{#<!--                <input type="hidden" name="id_feedback" value="{{i.id}}">-->#}
+{#<!--                <input class="btn btn-danger" type="submit" name="delete_feedback" value="Delete">-->#}
+{#<!--            </form>-->#}
+{#<!--            <br/>-->#}
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Feedback</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+          <tbody>
+               {% for i in feedbacks_provided %}
+                <tr>
+                  <td scope="row">{{i.feedback}}</td>
+                  <td>
+                      <form method="POST" action="{{url_for('main.delete_Feedback')}}">
+                            <input type="hidden" name="id_feedback" value="{{i.id}}">
+                            <input class="btn btn-danger" type="submit" name='delete_feedback' value="Delete">
+                      </form>
+                  </td>
+                </tr>
+                {% endfor %}
+          </tbody>
+    </table>
+{#<!--        {% endfor %}-->#}
     </div>
     <br/>
+
+
     <div>Courts Booked :
-        {% for i in courts_booked %}
-            <div>Start Time: {{i.start_time}}</div>
-            <div>End Time: {{i.end_time}}</div>
-            <div>Court: {{i.court}}</div>
-            <form method="POST" action="{{url_for('main.delete_court_booking') }}">
-                <input type="hidden" name="id_court" value="{{i.id}}">
-                <input class="btn btn-danger" type="submit" name="delete_court_reservation" data-time="{{i.time}}" data-court="{{i.court}}" value="Delete">
-            </form>
-            <br/>
-        {% endfor %}
+{# <!--        {% for i in courts_booked %}--> #}
+{#<!--            <div>Start Time: {{i.start_time}}</div>-->#}
+{#<!--            <div>End Time: {{i.end_time}}</div>-->#}
+{#<!--            <div>Court: {{i.court}}</div>-->#}
+{#<!--            <form method="POST" action="{{url_for('main.delete_court_booking') }}">-->#}
+{#<!--                <input type="hidden" name="id_court" value="{{i.id}}">-->#}
+{#<!--                <input class="btn btn-danger" type="submit" name="delete_court_reservation" data-time="{{i.time}}" data-court="{{i.court}}" value="Delete">-->#}
+{#<!--            </form>-->#}
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th scope="col">Court Number</th>
+          <th scope="col">Delete</th>
+        </tr>
+          </thead>
+              <tbody>
+                {% for i in courts_booked %}
+                <tr>
+                  <td scope="row">{{i.start_time}}</td>
+                  <td scope="row">{{i.end_time}}</td>
+                  <td scope="row">{{i.court}}</td>
+                  <td>
+                      <form method="POST" action="{{url_for('main.delete_court_booking')}}">
+                            <input type="hidden" name="id_court" value="{{i.id}}">
+                            <input class="btn btn-danger" type="submit" name='delete_court_reservation' value="Delete">
+                      </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        <br/>
+{#<!--        {% endfor %}-->#}
     </div>
     <br>
+
+
 
     <h1><u>Change My Account Information</u></h1>
     <form method="POST" action="">

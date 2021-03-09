@@ -29,22 +29,53 @@
 
     {% if friend[0] %} <!-- friend will not work, dont know why it is even returning an objec -->
         <h2>These are {{friend[0].owner.username}}'s upcoming meals!</h2>
-        <form method="POST" action="">
-            {% for i in friend %}
-                <label>Food: </label>{{i.Name}}
-                <br>
-                <label>Meal Type: </label>{{i.Type}}
-                <br>
-                <label>Date: </label>{{i.Date.date()}}
-                <br>
-                <label>Day: </label>{{i.Date.date().strftime('%A')}}
-                <br>
-                <input type="checkbox" name="copy" value="{{i.id}}">
-            <br>
-            {% endfor %}
+{#<!--        <form method="POST" action="">-->
+<!--            {% for i in friend %}-->
+<!--                <label>Food: </label>{{i.Name}}-->
+<!--                <br>-->
+<!--                <label>Meal Type: </label>{{i.Type}}-->
+<!--                <br>-->
+<!--                <label>Date: </label>{{i.Date.date()}}-->
+<!--                <br>-->
+<!--                <label>Day: </label>{{i.Date.date().strftime('%A')}}-->
+<!--                <br>-->
+<!--                <input type="checkbox" name="copy" value="{{i.id}}">-->
+<!--            <br>-->#}
+
+            <table class="table table-hover table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Food</th>
+                  <th scope="col">Meal Type</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Day</th>
+                  <th scope="col">Select</th>
+                </tr>
+                  </thead>
+                      <tbody>
+                        {% for i in friend %}
+                        <tr>
+                          <td scope="row">{{i.Name}}</td>
+                          <td scope="row">{{i.Type}}</td>
+                          <td scope="row">{{i.Date.date()}}</td>
+                          <td scope="row">{{i.Date.date().strftime('%A')}}</td>
+                          <td scope="row">
+                              <form method="POST" action="">
+                                    <input type="checkbox" name="copy" value="{{i.id}}">
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+              </table>
+
+
+
+
+{#<!--            {% endfor %}-->#}
         <br>
-        <input type="submit" name="Add to My Meals" value="Add to My Meals">
+        <input class="btn btn-success" type="submit" name="Add to My Meals" value="Add to My Meals">
         </form>
+
     {% else %}
         {% if friend %}
             <h2>{{friend_name.username}} does not have any meal plans yet.</h2>
@@ -88,24 +119,64 @@
         <input type="submit" name="add" value="Add" class="btn btn-outline-success">
     </form>
     <br>
-    <div>
-        {% for i in my %}
-            <label>Food: </label>{{i.Name}}
-            <br>
-            <label>Meal Type: </label>{{i.Type}}
-            <br>
-            <label>Date: </label>{{i.Date.date()}}
-            <br>
-            <label>Day: </label>{{i.Date.date().strftime('%A')}}
-            <br>
-            <form method="POST">
+
+<!--    <div>-->
+<!--        {% for i in my %}-->
+<!--            <label>Food: </label>{{i.Name}}-->
+<!--            <br>-->
+<!--            <label>Meal Type: </label>{{i.Type}}-->
+<!--            <br>-->
+<!--            <label>Date: </label>{{i.Date.date()}}-->
+<!--            <br>-->
+<!--            <label>Day: </label>{{i.Date.date().strftime('%A')}}-->
+<!--            <br>-->
+<!--            <form method="POST">-->
+<!--                <input type="hidden" name="delete" value="{{i.id}}">-->
+<!--                <input class="btn btn-danger" type="submit" name='submit' value="Delete">-->
+<!--                <input class="btn btn-success" type="submit" name='submit' value="Update">-->
+<!--            </form>-->
+<!--            <br>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+
+
+<table class="table table-hover table-dark">
+  <thead>
+
+    <tr>
+      <th scope="col">Food</th>
+      <th scope="col">Meal Type</th>
+      <th scope="col">Date</th>
+      <th scope="col">Day</th>
+      <th scope="col">Delete</th>
+      <th scope="col">Update</th>
+    </tr>
+
+  </thead>
+  <tbody>
+    {% for i in my %}
+    <tr>
+      <th scope="row">{{i.Name}}</th>
+      <td>{{i.Type}}</td>
+      <td>{{i.Date.date()}}</td>
+      <td>{{i.Date.date().strftime('%A')}}</td>
+      <td>
+          <form method="POST">
                 <input type="hidden" name="delete" value="{{i.id}}">
                 <input class="btn btn-danger" type="submit" name='submit' value="Delete">
+          </form>
+      </td>
+      <td>
+          <form method="POST">
+                <input type="hidden" name="delete" value="{{i.id}}">
                 <input class="btn btn-success" type="submit" name='submit' value="Update">
-            </form>
-            <br>
-        {% endfor %}
-    </div>
+          </form>
+      </td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock content %}
 
 

@@ -43,25 +43,63 @@
 
     <br>
     <br>
-    <div>
-        {% for i in myrecipes %}
-            <h2>Category: <u>{{i[0]}}</u></h2>
-            <br>
+
+<!--    <div>-->
+<!--        {% for i in myrecipes %}-->
+<!--            <h2>Category: <u>{{i[0]}}</u></h2>-->
+<!--            <br>-->
+<!--            {% for j in i[1] %}-->
+<!--                Name: {{j.Name}}-->
+<!--                <br>-->
+<!--                Ingredient: {{j.Ingredients}}-->
+<!--                <br>-->
+<!--                Category: {{j.Category}}-->
+<!--                <br>-->
+<!--                <form method="POST">-->
+<!--                    <input type="hidden" value="{{j.id}}" name="delete-update-recipe">-->
+<!--                    <input class="btn btn-danger" type="submit" value="Delete" name="delete">-->
+<!--                    <input class="btn btn-success" type="submit" value="Update" name="update">-->
+<!--                </form>-->
+<!--                <br>-->
+<!--            {% endfor %}-->
+<!--            <br>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<table class="table table-hover table-dark">
+  <thead>
+
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Ingredient</th>
+      <th scope="col">Category</th>
+      <th scope="col">Delete</th>
+      <th scope="col">Update</th>
+    </tr>
+
+  </thead>
+  <tbody>
+    {% for i in myrecipes %}
             {% for j in i[1] %}
-                Name: {{j.Name}}
-                <br>
-                Ingredient: {{j.Ingredients}}
-                <br>
-                Category: {{j.Category}}
-                <br>
-                <form method="POST">
-                    <input type="hidden" value="{{j.id}}" name="delete-update-recipe">
-                    <input class="btn btn-danger" type="submit" value="Delete" name="delete">
-                    <input class="btn btn-success" type="submit" value="Update" name="update">
-                </form>
-                <br>
-            {% endfor %}
-            <br>
+
+    <tr>
+      <th scope="row">{{j.Name}}</th>
+      <td>{{j.Ingredients}}</td>
+      <td>{{j.Category}}</td>
+      <td>
+          <form method="POST">
+                <input type="hidden" name="delete-update-recipe" value="{{j.id}}">
+                <input class="btn btn-danger" type="submit" name='delete' value="Delete">
+          </form>
+      </td>
+      <td>
+          <form method="POST">
+                <input type="hidden" name="delete-update-recipe" value="{{j.id}}">
+                <input class="btn btn-success" type="submit" name='update' value="Update">
+          </form>
+      </td>
         {% endfor %}
-    </div>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock content %}
