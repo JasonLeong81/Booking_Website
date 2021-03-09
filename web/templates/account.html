@@ -2,10 +2,21 @@
 
 
 {% block content %}
+
+
     <h1>Account</h1>
-    <div>Name : {{r.data.username}}</div>
-    <div>Email : {{r['data'].email}}</div>
+    <div><b>Name : {{r.data.username}}</b></div>
+    <div><b>Email : {{r['data'].email}}</b></div>
     <br/>
+    <br/>
+    <br/>
+
+
+
+
+
+
+
     <div>Feedbacks Provided :
 {#<!--        {% for i in feedbacks_provided %}-->#}
 {#<!--            <div>{{i.feedback}}</div>-->#}
@@ -97,6 +108,8 @@
         </div>
     </form>
 
+    <br>
+    <br>
     <form method="POST" action="">
         {{form1.hidden_tag()}}
         <div style="width:45%;" class="input-group mb-3">
@@ -112,6 +125,8 @@
         </div>
     </form>
 
+    <br>
+    <br>
     <form method="POST" action="">
         {{form2.hidden_tag()}}
         <div style="width:45%;" class="input-group mb-3">
