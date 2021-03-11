@@ -2,8 +2,8 @@ import os
 class Config:
     SECRET_KEY = 'jason'
 
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///jason.db' # for deployment
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'  # for testing
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///jason.db' # for deployment
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'  # for testing
 
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     # SQLALCHEMY_DATABASE_URI ='postgres://ysrqfbbqcroxrk:7836ec49050c77b20c5ef5a7ae20afd3ca6995113083ee5a8de647af65218915@ec2-54-74-14-109.eu-west-1.compute.amazonaws.com:5432/dfbp68fivhnfte'
