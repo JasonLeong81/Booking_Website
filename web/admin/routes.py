@@ -1,12 +1,14 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for
+from flask import Blueprint, request, render_template, flash, redirect, url_for, session
 from web.main.forms import FeedbackForm, CourtBookingForm, MessagesForm
 from web import db,mail, Message
 from web.models import Feedback, Booking, Messages, User
 from flask_login import login_required, logout_user, login_user, current_user
-
+from bcrypt import *
 
 admin = Blueprint('admin',__name__) # name, import_name (for easy navigation from root)
 # cannot have a function same as blueprint
+
+
 
 @admin.route('/admin_Account',methods=['GET','POST'])
 @login_required
@@ -57,6 +59,18 @@ def admin_Account():
                     flash(f'User with id {int(request.form["find_user_by_id"])} not found.')
                     return render_template('admin.html', title='AdminPage', users=users, courts_booked=courts_booked,feedbacks=feedbacks)
 
+        if 'recover_password' in request.form:
+            user_id = int(request.form['recover_password'])
+            session['user_id_recoverPassword'] = user_id
+            return redirect(url_for('admin.recover_password'))
 
     return render_template('admin.html',title='AdminPage',users=users,courts_booked=courts_booked,feedbacks=feedbacks,find_user=find_user)
 
+@admin.route('/recover_password',methods=['GET','POST'])
+@login_required
+def recover_password():
+    db.session.query(User).filter(User.id == session['user_id_recoverPassword']).update({User.password:hashpw(bytes('123',encoding='utf-8'),gensalt())}) # change password to '123'
+    db.session.commit()
+    flash(f"Customer {User.query.filter_by(id=session['user_id_recoverPassword']).first().username}'s password has been changed to 123. Please notify customer.")
+    session.pop('user_id_recoverPassword',None)
+    return redirect(url_for('admin.admin_Account'))
