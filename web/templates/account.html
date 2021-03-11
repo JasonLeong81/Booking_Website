@@ -95,11 +95,11 @@
     <h1><u>Change My Account Information</u></h1>
     <form method="POST" action="">
         {{form.hidden_tag()}}
-        <div style="width:45%;" class="input-group mb-3">
+        <div style="min-width:45%;" class="input-group mb-3">
             {{form.current_email.label(class="input-group-text",id="inputGroup-sizing-lg")}}
             {{form.current_email(class="form-control")}}
         </div>
-        <div style="width:45%;" class="input-group mb-3">
+        <div style="min-width:45%;" class="input-group mb-3">
             {{form.new_email.label(class="input-group-text",id="inputGroup-sizing-lg")}}
             {{form.new_email(class="form-control")}}
         </div>

@@ -19,6 +19,8 @@ from web.main.routes import main
 app.register_blueprint(main)
 from web.user.routes import user
 app.register_blueprint(user)
+from web.admin.routes import admin
+app.register_blueprint(admin)
 
 db.create_all()
 

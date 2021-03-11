@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Admin Page</h1>
+    <h3>Welcome to the team {{current_user.username}}!</h3>
+
+
+
+    <form method="POST">
+        <label for="new_admin">New Admin </label>
+        <input id="new_admin" type="text" required placeholder="John" name="new_admin">
+        <input type="submit" name="make_remove_admin" value="Make Admin">
+        <input type="submit" name="make_remove_admin" value="Remove Admin">
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <form method="POST">
+        <label for="find_user">Find a user </label>
+        <input min="1" required id="find_user" type="number" required placeholder="Claire" name="find_user_by_id">
+        <input type="submit" name="find_user" value="Find User">
+    </form>
+    <br>
+    <br>
+    {% if find_user is not none and find_user|length >= 1 %}
+    <h3>User's information</h3>
+        {% for i in find_user %}
+            Username: {{i.username}}
+            <br>
+            Email: {{i.email}}
+            <br>
+            Admin: {{i.admin}}
+            <br>
+            Logged_in: {{i.logged_in}}
+            <br>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>List of users</h3>
+    Total number of customers: Unknown
+    <br>
+    Total number of admin: Unknown
+    <br>
+    Total number of users: {{users|length}}
+    <br>
+    <br>
+    {% for i in users %}
+        username: {{i.username}}
+        <br>
+        admin: {{i.admin}}
+        <br>
+        id: {{i.id}}
+        <br>
+        <br>
+    {% endfor %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>List of feedbacks</h3>
+    Total feedbacks: {{feedbacks|length}}
+    <br>
+    <br>
+    {% for i in feedbacks %}
+        feedback: {{i.feedback}}
+        <br>
+        user: {{i.owner.username}}
+        <br>
+        <br>
+    {% endfor %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>List of courts booked</h3>
+    Total courts booked today: {{courts_booked|length}}
+    <br>
+    <br>
+    {% for i in courts_booked %}
+        Court Number: {{i.court}}
+        <br>
+        player id: {{i.owner.id}}
+        <br>
+        <br>
+    {% endfor %}
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock content %}

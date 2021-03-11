@@ -22,9 +22,8 @@ class User(db.Model,UserMixin):
     messages = db.relationship('Messages',backref='owner',lazy='subquery')
     grocery = db.relationship('Grocery',backref='owner',lazy='subquery')
     recipes = db.relationship('Recipes',backref='owner',lazy='subquery')
-
     logged_in = db.Column(db.String(10), nullable=True)
-    # admin =
+    admin = db.Column(db.String(10), nullable=True)
 
 class Feedback(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)

@@ -5,6 +5,7 @@ from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
 from web import mail, Message, db, main
 from datetime import datetime
+from web.admin.routes import admin
 
 user = Blueprint('user',__name__)
 
@@ -89,7 +90,6 @@ def login():
             flash('This email is not registered in our servers.')
             return render_template('login.html', title='Login', form=form)
         p = user.password
-        # if user and form.password.data == p:
         if user and checkpw(bytes(form.password.data,encoding='utf-8'),p):
             login_user(user)
             db.session.query(User).filter(User.id == current_user.id).update({User.logged_in: 'True'})
@@ -98,7 +98,10 @@ def login():
             # msg.body = f'{current_user.username} has logged in with email {current_user.email}.'
             # mail.send(msg)
             flash('You have been logged in.')
-            return redirect(url_for('user.account'))
+            if current_user.admin == 'True':
+                return redirect(url_for('admin.admin_Account'))
+            else:
+                return redirect(url_for('user.account'))
         else:
             flash('Login unsuccessful. Please check email and password.')
     else:
