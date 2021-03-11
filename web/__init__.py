@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail, Message
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
@@ -24,6 +25,11 @@ app.register_blueprint(admin)
 
 db.create_all()
 
+
+
+
+
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -38,6 +44,9 @@ def create_app(config_class=Config):
     app.register_blueprint(user)
 
     return app
+
+
+
 
 # if __name__ =='__main__':
 #     app = create_app()
