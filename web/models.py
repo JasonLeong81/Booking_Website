@@ -34,6 +34,7 @@ class Booking(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     start_time = db.Column(db.DateTime,nullable=False)
     end_time = db.Column(db.DateTime,nullable=False)
+    date = db.Column(db.Date,nullable=False)
     court = db.Column(db.Integer,nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False) # user is the User table
 

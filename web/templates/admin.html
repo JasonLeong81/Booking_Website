@@ -4,6 +4,20 @@
     <h1>Admin Page</h1>
     <h3>Welcome to the team {{current_user.username}}!</h3>
 
+
+    <div>
+        <p>People who booked courts today</p>
+        {% for i in test %}
+            User_id : {{i[-1]}}
+            <br>
+            Court Number: {{i[-2]}}
+            <br>
+            <br>
+        {% endfor %}
+    </div>
+
+
+
     <form method="POST">
         <label for="recover_password">Customer's ID</label>
         <input name="recover_password" type="number" min="1" required id="recover_password">

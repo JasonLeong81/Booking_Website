@@ -3,7 +3,7 @@ from web.main.forms import FeedbackForm, CourtBookingForm, MessagesForm
 from web import db,mail, Message
 from web.models import Feedback, Booking, Messages, User
 from flask_login import login_required, current_user
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 main = Blueprint('main',__name__)
 
@@ -76,12 +76,15 @@ def competition():
 @login_required
 def booking():
     # hourly, even if you booked 1:59-2:00, you still pay for 1 hour (count at least one hour)
+
+
+
     form = CourtBookingForm()
     if request.method == 'POST':
         # print('y' * 50)
         if form.validate_on_submit():
-
-            raw_date = request.form['date']
+            print(request.form['date'],f'User {current_user.username} booked a court')
+            raw_date = request.form['date'].strip()
             cleaned_date = datetime(int(raw_date[0:4]),int(raw_date[5:7]),int(raw_date[8:]),0,0)
             raw_start_time = request.form['start_time']
             raw_end_time = request.form['end_time']
@@ -130,7 +133,7 @@ def booking():
                 if temp1 in available_temp:
                     number_of_hours_counter += 1
                     if number_of_hours_counter == int(number_of_hours):
-                        booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user)
+                        booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user,date=date.today())
                         db.session.add(booking)
                         db.session.commit()
                         # print(raw_start_time)
@@ -140,7 +143,7 @@ def booking():
                         continue
             else:
                 flash('This court is not available.')
-    return render_template('booking.html',title='Booking',form=form)
+    return render_template('booking.html',title='Booking',form=form,date_today=date.today())
 
 @main.route('/delete_court',methods=['POST','GET'])
 @login_required

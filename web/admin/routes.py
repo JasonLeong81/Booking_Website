@@ -4,6 +4,7 @@ from web import db,mail, Message
 from web.models import Feedback, Booking, Messages, User
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
+from datetime import date, datetime
 
 admin = Blueprint('admin',__name__) # name, import_name (for easy navigation from root)
 # cannot have a function same as blueprint
@@ -64,7 +65,10 @@ def admin_Account():
             session['user_id_recoverPassword'] = user_id
             return redirect(url_for('admin.recover_password'))
 
-    return render_template('admin.html',title='AdminPage',users=users,courts_booked=courts_booked,feedbacks=feedbacks,find_user=find_user)
+    # test = f""" select date from Booking; """
+    test = f""" select * from Booking where date == '{date.today()}'; """
+    test = db.session.execute(test)
+    return render_template('admin.html',title='AdminPage',users=users,courts_booked=courts_booked,feedbacks=feedbacks,find_user=find_user,test=test)
 
 @admin.route('/recover_password',methods=['GET','POST'])
 @login_required
