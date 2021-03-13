@@ -5,8 +5,12 @@
     <h3>Welcome to the team {{current_user.username}}!</h3>
 
 
-    <div>
-        <p>People who booked courts today</p>
+    <form method="POST">
+        <label for="date_court_booking">Courts booked on </label>
+        <input type="date" name="date_court_booking" required value="{{today}}">
+        <input type="submit" name="date_court_booking_submit" value="Search">
+        <br>
+        <br>
         {% for i in test %}
             User_id : {{i[-1]}}
             <br>
@@ -14,7 +18,10 @@
             <br>
             <br>
         {% endfor %}
-    </div>
+    </form>
+    <br>
+    <br>
+    <br>
 
 
 
@@ -109,13 +116,14 @@
     <br>
     <br>
     <h3>List of courts booked</h3>
-    Total courts booked today: {{courts_booked|length}}
     <br>
     <br>
     {% for i in courts_booked %}
         Court Number: {{i.court}}
         <br>
         player id: {{i.owner.id}}
+        <br>
+        Date: {{i.date}}
         <br>
         <br>
     {% endfor %}

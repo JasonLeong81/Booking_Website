@@ -15,6 +15,7 @@ admin = Blueprint('admin',__name__) # name, import_name (for easy navigation fro
 @login_required
 def admin_Account():
     find_user = None
+    test = f""" select * from Booking where date == '{date.today()}'; """
 
     # db.session.query(User).filter(User.username == 'admin').update({User.admin: 'True'})
     # db.session.commit()
@@ -65,10 +66,13 @@ def admin_Account():
             session['user_id_recoverPassword'] = user_id
             return redirect(url_for('admin.recover_password'))
 
+        if 'date_court_booking_submit' in request.form:
+            date_wanted = request.form['date_court_booking']
+            test = f""" select * from Booking where date == '{date_wanted}'; """
+
     # test = f""" select date from Booking; """
-    test = f""" select * from Booking where date == '{date.today()}'; """
     test = db.session.execute(test)
-    return render_template('admin.html',title='AdminPage',users=users,courts_booked=courts_booked,feedbacks=feedbacks,find_user=find_user,test=test)
+    return render_template('admin.html',title='AdminPage',users=users,courts_booked=courts_booked,feedbacks=feedbacks,find_user=find_user,test=test,today=date.today())
 
 @admin.route('/recover_password',methods=['GET','POST'])
 @login_required

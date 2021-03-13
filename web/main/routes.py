@@ -133,7 +133,7 @@ def booking():
                 if temp1 in available_temp:
                     number_of_hours_counter += 1
                     if number_of_hours_counter == int(number_of_hours):
-                        booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user,date=date.today())
+                        booking = Booking(start_time=cleaned_start_time,end_time=cleaned_end_time, court=form.court.data,owner=current_user,date=date(int(raw_date[0:4]),int(raw_date[5:7]),int(raw_date[8:])))
                         db.session.add(booking)
                         db.session.commit()
                         # print(raw_start_time)

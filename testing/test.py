@@ -140,7 +140,7 @@ def change(INPUT):
 
 
 
-print(date.today())
+print(date(1,1,1))
 
 
 
