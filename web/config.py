@@ -13,7 +13,8 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'leongjason822@gmail.com'
     MAIL_PASSWORD = '378100Yc'
-
+    STRIPE_PUBLIC_KEY = 'pk_test_51IUY9XGCE7nPsl2DMpG9KvaBhWxgIreDeG24Mqks7nAiBURMh03M0PbjkEIILDD4UOTapBV8SvTIda6DbGTOopcn00NFCuixYg'
+    STRIPE_SECRET_KEY = 'sk_test_51IUY9XGCE7nPsl2DUPJnUkFAZSBBSxlOK68BRpbWv8EYFETJtlVbjpakbrd7YVPuUnx41kDMa28qKXzxiSbYJTnf00iV2vF3uH'
 
 # no module names psycopg2 -> pip install psycopg2
 

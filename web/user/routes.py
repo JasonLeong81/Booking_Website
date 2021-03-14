@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request, session
+from flask import Blueprint, render_template, flash, redirect, url_for, request, session, abort
 from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm
 from web.models import User, Feedback, Booking, Messages, Grocery, Recipes
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
-from web import mail, Message, db, main
+from web import mail, Message, db, main, app
 from datetime import datetime
 from web.admin.routes import admin
 
@@ -538,6 +538,76 @@ def update_recipes():
             return redirect(url_for('user.recipes'))
     recipe_to_update = Recipes.query.filter_by(id=session['update_recipe_id']).first()
     return render_template('Update_recipe.html', title='UpdateRecipe', recipe_to_update=recipe_to_update)
+
+
+import stripe
+stripe.api_key = app.config['STRIPE_SECRET_KEY']
+@user.route('/payment',methods=['POST','GET'])
+@login_required
+def payment():
+    ### this way everytime we refresh the payment.html page, we have a payment that is failed
+    ### everytime we reload the page, we create a session
+    # session = stripe.checkout.Session.create(
+    #     payment_method_types=['card'],
+    #     line_items = [{
+    #         'price':'price_1IUZP9GCE7nPsl2DJjIrwwTf',
+    #         'quantity':1
+    #     }],
+    #     mode='payment',
+    #     success_url=url_for('user.account',_external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+    #     cancel_url=url_for('user.payment',_external=True)
+    # )
+    # return render_template('payment.html',title='payment',checkout_session_id=session['id'],checkout_public_key=app.config['STRIPE_PUBLIC_KEY'])
+    return render_template('payment.html',title='payment')
+
+@user.route('/ajax_payment',methods=['POST','GET'])
+@login_required
+def ajax_payment():
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items = [{
+            'price':'price_1IUZP9GCE7nPsl2DJjIrwwTf',
+            'quantity':1
+        }],
+        mode='payment',
+        success_url=url_for('user.account',_external=True) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=url_for('user.payment',_external=True)
+    )
+    return {
+        'checkout_session_id': session['id'],
+        'checkout_public_key': app.config['STRIPE_PUBLIC_KEY']
+    }
+
+@app.route('/stripe_webhook', methods=['POST'])
+def stripe_webhook():
+    print('WEBHOOK CALLED')
+    if request.content_length > 1024 * 1024:
+        print('REQUEST TOO BIG')
+        abort(400)
+    payload = request.get_data()
+    sig_header = request.environ.get('HTTP_STRIPE_SIGNATURE')
+    endpoint_secret = 'YOUR_ENDPOINT_SECRET'
+    event = None
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        print('INVALID PAYLOAD')
+        return {}, 400
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print('INVALID SIGNATURE')
+        return {}, 400
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        print(session)
+        line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
+        print(line_items['data'][0]['description'])
+    return {}
+
 
 
 
