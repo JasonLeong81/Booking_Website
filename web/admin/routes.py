@@ -52,7 +52,7 @@ def admin_Account():
 
 
         if 'find_user' in request.form:
-            if request.form['find_user'] == 'Find User':
+            if request.form['find_user'] == 'Find User': # if name==value
                 user = User.query.filter_by(id=int(request.form['find_user_by_id'])).first()
                 if user:
                     find_user = []

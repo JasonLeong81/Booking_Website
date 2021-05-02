@@ -13,3 +13,7 @@ class CourtBookingForm(FlaskForm):
 class MessagesForm(FlaskForm):
     messages = StringField('Messages')
     submit = SubmitField('Send')
+
+class AddFriendForm(FlaskForm): # this is only a button on a person's profile for others to add him/her
+    Friend_username = StringField("Friend's username", validators=[DataRequired()],default='')
+    submit = SubmitField('Add Friend')

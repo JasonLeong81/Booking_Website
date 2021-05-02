@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session, abort
-from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm
-from web.models import User, Feedback, Booking, Messages, Grocery, Recipes
+from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm, ShoppingListForm
+from web.models import User, Feedback, Booking, Messages, Grocery, Recipes, Shopping, Friends
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
 from web import mail, Message, db, main, app
@@ -14,9 +14,14 @@ user = Blueprint('user',__name__)
 @login_required
 def account():
     # db.session.query(User).filter(User.username == 'Jason').update({User.username: 'Jasoni'}) # updating rows in database
+    # db.session.commit()
     # hashed = hashpw(bytes(form.password.data, encoding='utf-8'), gensalt())
     # if user and checkpw(bytes(form.password.data, encoding='utf-8'), p):
-
+    try:
+        if session['id']:
+            print(session['id'])
+    except:
+        print('no session id')
     courts_booked = Booking.query.filter_by(user_id=current_user.id)
     feedbacks_provided = Feedback.query.filter_by(user_id=current_user.id)
     if current_user.is_authenticated:
@@ -25,6 +30,64 @@ def account():
     else:
         resp = {"result": 401,
                 "data": {"message": "user no login"}}
+
+    ### Remove friends ###
+    if request.method == 'POST':
+        if 'remove_friend' in request.form:
+            if request.form['remove_friend'] == 'Remove':
+                mine,friend = int(str(request.form['Friends_id']).split('/')[0]),int(str(request.form['Friends_id']).split('/')[1])
+                db.session.delete(Friends.query.filter_by(id=mine).first())
+                db.session.delete(Friends.query.filter_by(id=friend).first()) # remove the other one
+                db.session.commit()
+                flash('Removed a friend.')
+
+    ### see friends ###
+    f = []
+    myfriends = Friends.query.filter_by(Friend_of_id=current_user.id,Status=1) # get all users whose value of Friend_of_id is me with status 1 from Friend's table
+
+    try:
+        for MyFriends in myfriends:
+            the_other_one = Friends.query.filter_by(Friend_of_id=MyFriends.From_id,Status=1).first().id
+            f.append([User.query.filter_by(id=MyFriends.From_id).first(),str(MyFriends.id) + '/' + str(the_other_one)]) # [User_object,Friends_id for mine and friend in one strig]
+    except:
+        pass
+
+    ### see friend_request ###
+    Friend_Request_temp = Friends.query.filter_by(To_id=current_user.id,Status=0)
+    Friend_Request = []
+    for i in Friend_Request_temp:
+        user_id = i.From_id # Friend's table id
+        User_who_added_you = User.query.filter_by(id=user_id).first()
+        try:
+            Friend_Request.append([User_who_added_you.username,i.Date,i.id]) # [User,date,id of adder in Friends table]
+        except:
+            pass
+    if request.method == 'POST':
+        if 'accept_friend_request' in request.form:
+            if request.form['accept_friend_request'] == 'Accept':
+                id_in_FriendsTable = int(request.form['id_in_FriendsTable'])
+                db.session.query(Friends).filter(Friends.id == id_in_FriendsTable).update({Friends.Status: 1,Friends.Friend_of_id:current_user.id}) # toggling Friend's table Status from 0 to 1
+                db.session.commit()
+                ### Once accepted, we insert a row into Friend's table but with Friend_of_id being the person whose current_user accepted as friend, from_id and to_id will be swapped, and the date would be datetime.today() ###
+                # this is optional, since we can always tell users to add each other if they wanna be friends #
+                person_whose_currentuser_accepted = Friends.query.filter_by(id=int(request.form['id_in_FriendsTable'])).first().From_id # person who sent current_user the friend request
+                success_friend_request_response = Friends(Date=datetime.today(), From=current_user, To=User.query.filter_by(id=person_whose_currentuser_accepted).first(), Status=1, Friend_of_id=person_whose_currentuser_accepted)
+                db.session.add(success_friend_request_response)
+                db.session.commit()
+                # print('Done'*100)
+                ## end of optional code ###
+                flash('Accepted friend request.')
+
+        if 'decline_friend_request' in request.form:
+            if request.form['decline_friend_request'] == 'Decline':
+                # db.session.query(Friends).filter(Friends.id == int(request.form['id_in_FriendsTable'])).update({Friends.Status: 2,Friends.Friend_of_id:current_user.id})  # toggling Friend's table Status from 0 to 2
+                friend_request_to_be_deleted = Friends.query.filter_by(id=int(request.form['id_in_FriendsTable'])).first()
+                db.session.delete(friend_request_to_be_deleted) # deleting a friend request that has been rejected
+                db.session.commit()
+                flash('Declined friend request.')
+        return redirect(url_for('user.account'))
+
+
 
     form = UpdateEmailForm()
     if form.validate_on_submit():
@@ -77,7 +140,7 @@ def account():
     form2.new_username.data = ''
 
 
-    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2)
+    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2,fr=Friend_Request,myFriends=f)
 
 @user.route('/login',methods=['GET','POST'])
 def login():
@@ -540,6 +603,9 @@ def update_recipes():
     return render_template('Update_recipe.html', title='UpdateRecipe', recipe_to_update=recipe_to_update)
 
 
+
+
+
 import stripe
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
 @user.route('/payment',methods=['POST','GET'])
@@ -573,41 +639,85 @@ def ajax_payment():
         success_url=url_for('user.account',_external=True) + '?session_id={CHECKOUT_SESSION_ID}',
         cancel_url=url_for('user.payment',_external=True)
     )
+    # print(session['id'])
     return {
         'checkout_session_id': session['id'],
         'checkout_public_key': app.config['STRIPE_PUBLIC_KEY']
     }
 
-@app.route('/stripe_webhook', methods=['POST'])
-def stripe_webhook():
-    print('WEBHOOK CALLED')
-    if request.content_length > 1024 * 1024:
-        print('REQUEST TOO BIG')
-        abort(400)
-    payload = request.get_data()
-    sig_header = request.environ.get('HTTP_STRIPE_SIGNATURE')
-    endpoint_secret = 'YOUR_ENDPOINT_SECRET'
-    event = None
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, endpoint_secret
-        )
-    except ValueError as e:
-        # Invalid payload
-        print('INVALID PAYLOAD')
-        return {}, 400
-    except stripe.error.SignatureVerificationError as e:
-        # Invalid signature
-        print('INVALID SIGNATURE')
-        return {}, 400
-    # Handle the checkout.session.completed event
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        print(session)
-        line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
-        print(line_items['data'][0]['description'])
-    return {}
+# @app.route('/stripe_webhook', methods=['POST'])
+# def stripe_webhook():
+#     print('WEBHOOK CALLED')
+#     if request.content_length > 1024 * 1024:
+#         print('REQUEST TOO BIG')
+#         abort(400)
+#     payload = request.get_data()
+#     sig_header = request.environ.get('HTTP_STRIPE_SIGNATURE')
+#     endpoint_secret = 'YOUR_ENDPOINT_SECRET'
+#     event = None
+#     try:
+#         event = stripe.Webhook.construct_event(
+#             payload, sig_header, endpoint_secret
+#         )
+#     except ValueError as e:
+#         # Invalid payload
+#         print('INVALID PAYLOAD')
+#         return {}, 400
+#     except stripe.error.SignatureVerificationError as e:
+#         # Invalid signature
+#         print('INVALID SIGNATURE')
+#         return {}, 400
+#     # Handle the checkout.session.completed event
+#     if event['type'] == 'checkout.session.completed':
+#         session = event['data']['object']
+#         print(session)
+#         line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
+#         print(line_items['data'][0]['description'])
+#     return {}
 
+
+
+
+@user.route('/shopping_list',methods=['POST','GET'])
+@login_required
+def shopping_list():
+    form = ShoppingListForm()
+    items = Shopping.query.filter_by(user_id=current_user.id) # get all items that have user_id the same as current user's id
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            Item_Name = form.Item.data.strip()
+            Date = datetime.today()
+            Description = form.Description.data.strip()
+            add_new_shopping_item = Shopping(Item_Name=Item_Name,Date=Date,Description=Description,owner=current_user)
+            db.session.add(add_new_shopping_item)
+            db.session.commit()
+            return redirect(url_for('user.shopping_list'))
+        if 'shopping_item_delete' in request.form:# if name in request.form
+            if request.form.get('shopping_item_delete') == "Delete": # if name == value
+                delete_one_shopping_item = Shopping.query.filter_by(id=int(request.form.get('id_shopping_item_delete'))).first()
+                db.session.delete(delete_one_shopping_item)
+                db.session.commit()
+                flash('One item has been deleted.')
+                return redirect(url_for('user.shopping_list'))
+        if 'shopping_item_update' in request.form:# if name in request.form
+            if request.form.get('shopping_item_update') == "Update": # if name == value
+                session['update_item_name'], session['update_item_description'] = Shopping.query.filter_by(id=int(request.form.get('id_shopping_item_update'))).first().Item_Name, Shopping.query.filter_by(id=int(request.form.get('id_shopping_item_update'))).first().Description
+                session['id_shopping_item_update'] = int(request.form.get('id_shopping_item_update'))
+                return redirect(url_for('user.update_shopping_item'))
+    return render_template('Shopping_List.html',title='MyShoppingList',form=form,items=items)
+
+@user.route('/update_shopping_item',methods=['POST','GET'])
+@login_required
+def update_shopping_item():
+    if request.method == 'POST':
+        db.session.query(Shopping).filter(Shopping.id == session['id_shopping_item_update']).update({Shopping.Item_Name: request.form.get('new_Item_Name').strip(),Shopping.Date:datetime.today(),Shopping.Description:request.form.get('new_Item_Description').strip()}) # updating rows in database
+        db.session.commit()
+        flash('One item has been update.')
+        session.pop('update_item_name', None)
+        session.pop('update_item_description', None)
+        session.pop('id_shopping_item_update', None)
+        return redirect(url_for('user.shopping_list'))
+    return render_template('update_shopping_item.html',title='UpdateShoppingItem',Old_Item_Name=session['update_item_name'],Old_Item_Description=session['update_item_description'])
 
 
 

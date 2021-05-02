@@ -11,6 +11,52 @@
     <br/>
     <br/>
 
+    <div>
+        <h3>My Friends</h3>
+        {% for i in myFriends %}
+            {{i[0].username}}
+            <br/>
+            <form method="POST" action="{{url_for('user.account')}}">
+                <div>
+                    <input type="hidden" name="Friends_id" value="{{i[1]}}">
+                    <input class="btn btn-danger" type="submit" name='remove_friend' value="Remove">
+                </div>
+            </form>
+            <br/>
+            <br/>
+            <br/>
+        {% endfor %}
+    </div>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+    <div>
+        <h3>Friend requests</h3>
+        {% for friend_request in fr %}
+            <label>Name</label>
+            {{friend_request[0]}}
+            <br/>
+            <label>Date</label>
+            {{friend_request[1].date()}}
+            <br/>
+            <form method="POST" action="{{url_for('user.account')}}">
+                <div>
+                    <input type="hidden" name="id_in_FriendsTable" value="{{friend_request[2]}}">
+                    <input class="btn btn-success" type="submit" name='accept_friend_request' value="Accept">
+                    <input class="btn btn-danger" type="submit" name='decline_friend_request' value="Decline">
+                </div>
+            </form>
+            <br/>
+            <br/>
+        {% endfor %}
+
+    </div>
+
 
 
 

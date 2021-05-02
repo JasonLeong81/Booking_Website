@@ -32,3 +32,12 @@ class UpdateUsernameForm(FlaskForm):
     new_username = StringField('New username', validators=[DataRequired()],default='')
     submit = SubmitField('Confirm')
 
+class ShoppingListForm(FlaskForm):
+    Item = StringField('Item name', validators=[DataRequired()],default='')
+    # Date = # get from javascript
+    Description = StringField('Item description',default='')
+    submit = SubmitField('Add')
+
+
+
+

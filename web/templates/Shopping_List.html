@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Shopping List</h1>
+
+    <form method="POST" action="{{url_for('user.shopping_list')}}">
+        {{form.hidden_tag()}}
+        <div style="min-width:45%;" class="input-group mb-3">
+            {{form.Item.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.Item(class="form-control")}}
+        </div>
+        <div style="min-width:45%;" class="input-group mb-3">
+            {{form.Description.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+            {{form.Description(class="form-control")}}
+        </div>
+        <div>
+            {{form.submit(class="btn btn-outline-success")}}
+        </div>
+    </form>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <div>
+        {% for item in items %}
+            <label>Item Name: </label>
+            {{item.Item_Name}}
+            <br/>
+            <label>Date: </label>
+            {{item.Date.date()}}
+            <br/>
+            <label>Item Description: </label>
+            {{item.Description}}
+            <form method="POST" action="{{url_for('user.shopping_list')}}">
+                <input type="hidden" name="id_shopping_item_delete" value="{{item.id}}">
+                <input class="btn btn-danger" type="submit" name='shopping_item_delete' value="Delete">
+            </form>
+            <form method="POST" action="{{url_for('user.shopping_list')}}">
+                <input type="hidden" name="id_shopping_item_update" value="{{item.id}}">
+                <input class="btn btn-success" type="submit" name='shopping_item_update' value="Update">
+            </form>
+            <br/>
+            <br/>
+        {% endfor %}
+    </div>
+
+
+{% endblock content %}

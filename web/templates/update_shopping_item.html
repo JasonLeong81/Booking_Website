@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update Shopping Item</h1>
+
+    <form method="POST">
+        <div style="width:35%;" class="input-group mb-3">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="new_Item_Name">Item Name</label>
+            <input class="form-control" type="text" id='new_Item_Name' name="new_Item_Name" value="{{Old_Item_Name}}">
+            <label class="input-group-text" id="inputGroup-sizing-lg" for="new_Item_Description">Item Description</label>
+            <input class="form-control" type="text" id='new_Item_Description' name="new_Item_Description" value="{{Old_Item_Description}}">
+        </div>
+        <input type="submit" class="btn btn-outline-success">
+    </form>
+{% endblock content %}

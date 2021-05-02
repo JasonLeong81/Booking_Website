@@ -133,22 +133,38 @@ from datetime import date
 # for i in aaa:
 #     print(i)
 
-def change(INPUT):
-    d = {'Breakfast':1,'Lunch':2,'Tea-Time':3,'Dinner':4,'Supper':5}
-    return d[INPUT]
-# print(change('Breakfast'))
-
-
-
-print(date(1,1,1))
 
 
 
 
+# print(date(1,1,1))
+
+
+
+import pandas as pd
+# print(pd.Timestamp.today().date())
 
 
 
 
+# Date = datetime(1,1,1,1,1,1)
+# print(Date.date())
+
+
+class Item():
+    def __init__(self,owner,d=datetime.today()):
+        self.owner = owner
+        self.d = d
+
+item = Item('jason')
+# print(item.d,item.owner)
+
+# LIST = [1,2,3]*10
+# print(len(LIST))
+
+ddd = '123/123'
+temp = ddd.split('/')
+print(temp[0],temp[1])
 
 
 

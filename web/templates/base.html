@@ -101,6 +101,10 @@
         <li class="nav-item">
           <a class="nav-link" href="{{url_for('user.recipes')}}">MyRecipes</a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('user.shopping_list')}}">MyShoppingList</a>
+        </li>
       {% elif current_user.admin != "True" and not current_user.is_authenticated%}
         <li class="nav-item">
           <a class="nav-link" href="{{url_for('user.register')}}">Register</a>

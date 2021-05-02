@@ -5,6 +5,7 @@ from flask_login import UserMixin
 # from flask_admin import Admin
 
 
+
 @login_manager.user_loader
 def load_user(user_id):
     # returns a user object from sqlalchemy by searching based on id provided
@@ -24,6 +25,12 @@ class User(db.Model,UserMixin):
     recipes = db.relationship('Recipes',backref='owner',lazy='subquery')
     logged_in = db.Column(db.String(10), nullable=True)
     admin = db.Column(db.String(10), nullable=True)
+    shopping_info = db.relationship('Shopping',backref='owner',lazy='subquery')
+
+    Friend_From = db.relationship('Friends',backref='From',lazy='subquery', foreign_keys='Friends.From_id')
+    Friend_To = db.relationship('Friends', backref='To', lazy='subquery', foreign_keys='Friends.To_id')
+
+
 
 class Feedback(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key=True)
@@ -32,7 +39,7 @@ class Feedback(db.Model,UserMixin):
 
 class Booking(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    start_time = db.Column(db.DateTime,nullable=False)
+    start_time = db.Column(db.DateTime,nullable=False) # datetime.date
     end_time = db.Column(db.DateTime,nullable=False)
     date = db.Column(db.Date,nullable=False)
     court = db.Column(db.Integer,nullable=False)
@@ -64,6 +71,30 @@ class Recipes(db.Model,UserMixin):
     Category = db.Column(db.String(100),nullable=False)
     Ingredients = db.Column(db.String(100),nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
+class Shopping(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    Item_Name = db.Column(db.String(100),nullable=False)
+    Date = db.Column(db.DateTime,nullable=False) # default to datetime.today()
+    Description = db.Column(db.String(500),nullable=False)
+    # Edited_by =
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
+class Friends(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    Date = db.Column(db.DateTime,nullable=False) # default to datetime.today()
+    From_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+    To_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+    Status = db.Column(db.Integer, nullable=False) # 0 -> Pending, 1 -> Accepted, 2 -> Rejected
+    Friend_of_id = db.Column(db.Integer,nullable=False) # friend of id of someone in user table # if not a friend yet, then this value is 0
+
+    # From = db.relationship('User', foreign_keys=[From_id])
+    # To = db.relationship('User', foreign_keys=[To_id])
+    # Friend_of = db.relationship('User', foreign_keys=[Friend_of_id])
+
+
+
+
 
 
 
