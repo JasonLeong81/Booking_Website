@@ -88,7 +88,7 @@ def home():
                 else:
                     # print(sent_friend_request)
                     To = User.query.filter_by(username=Friend_to_add).first()
-                    add_friend = Friends(Date=datetime.today(), From=current_user, To=To, Status=0, Friend_of_id=0) # adding a friend # sending a request
+                    add_friend = Friends(Date=datetime.today(), From=current_user, To=To, Status=0, Friend_of_id=0,Priviledged=0) # adding a friend # sending a request
                     db.session.add(add_friend)
                     db.session.commit()
                     flash(f'A friend request has been sent to {Friend_to_add}.')

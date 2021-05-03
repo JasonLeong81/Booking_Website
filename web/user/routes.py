@@ -54,7 +54,7 @@ def account():
                     print(m,1)
                     pass
                 else:
-                    db.session.query(Friends).filter(Friends.To_id == int(user_to_be_made_priviledged_id) ,Friends.Status==1,Friends.From_id==current_user.id).update({Friends.Priviledged: 1})  # toggling Friend's table Priviledged from 0 to 1 by making sure that they are friends
+                    db.session.query(Friends).filter(Friends.From_id == int(user_to_be_made_priviledged_id) ,Friends.Status==1,Friends.To_id==current_user.id).update({Friends.Priviledged: 1})  # toggling Friend's table Priviledged from 0 to 1 by making sure that they are friends
                     db.session.commit()
                     flash(f'Your friend {user_to_be_made_priviledged_username} can now edit your shopping list!')
             elif form3.submit_remove.data == True and form3.submit_grant.data == False:
@@ -74,7 +74,7 @@ def account():
                     print(m,2)
                     # pass
                 else:
-                    db.session.query(Friends).filter(Friends.To_id == int(user_to_be_made_priviledged_id) ,Friends.Status==1,Friends.From_id==current_user.id).update({Friends.Priviledged: 0})  # toggling Friend's table Priviledged from 0 to 1 by making sure that they are friends
+                    db.session.query(Friends).filter(Friends.From_id == int(user_to_be_made_priviledged_id) ,Friends.Status==1,Friends.To_id==current_user.id).update({Friends.Priviledged: 0})  # toggling Friend's table Priviledged from 0 to 1 by making sure that they are friends
                     db.session.commit()
                     flash(f'Your friend {user_to_be_made_priviledged_username} can no longer edit your shopping list!')
             return redirect(url_for('user.account'))
@@ -92,7 +92,7 @@ def account():
 
     ### see friends ###
     f = []
-    myfriends = Friends.query.filter_by(Friend_of_id=current_user.id,Status=1) # get all users whose value of Friend_of_id is me with status 1 from Friend's table
+    myfriends = Friends.query.filter_by(Friend_of_id=current_user.id,Status=1) # get all users whose value of Friend_of_id is me with status 1 from Friend's table # friends of id is relative to from_id
 
     try:
         for MyFriends in myfriends:
@@ -120,8 +120,10 @@ def account():
                 ### Once accepted, we insert a row into Friend's table but with Friend_of_id being the person whose current_user accepted as friend, from_id and to_id will be swapped, and the date would be datetime.today() ###
                 # this is optional, since we can always tell users to add each other if they wanna be friends #
                 person_whose_currentuser_accepted = Friends.query.filter_by(id=int(request.form['id_in_FriendsTable'])).first().From_id # person who sent current_user the friend request
-                success_friend_request_response = Friends(Date=datetime.today(), From=current_user, To=User.query.filter_by(id=person_whose_currentuser_accepted).first(), Status=1, Friend_of_id=person_whose_currentuser_accepted,Priviledged=0)
-                db.session.add(success_friend_request_response)
+                success_friend_request_response = db.session.query(Friends).filter(Friends.To_id==current_user.id, Friends.From_id==User.query.filter_by(id=person_whose_currentuser_accepted).first().id).update({Friends.Status: 1,Friends.Friend_of_id:current_user.id})
+                add_friend = Friends(Date=datetime.today(), From=current_user, To=User.query.filter_by(id=person_whose_currentuser_accepted).first(), Status=0,Priviledged=0,Friend_of_id=0) # counter adding and accepting
+                success_friend_request_response = db.session.query(Friends).filter(Friends.From_id==current_user.id, Friends.To_id==User.query.filter_by(id=person_whose_currentuser_accepted).first().id).update({Friends.Status: 1,Friends.Friend_of_id:User.query.filter_by(id=person_whose_currentuser_accepted).first().id})
+                db.session.add(add_friend)
                 db.session.commit()
                 # print('Done'*100)
                 ## end of optional code ###
@@ -766,11 +768,13 @@ def shopping_list():
                     flash(f'User "{Shopping_List_Of_username}" does not exist')
                 elif Shopping_List_Of_username == current_user.username:
                     flash('Your shopping list has already been shown. ')
-                elif Friends.query.filter_by(From_id=current_user.id,To_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,Status=1).first() == None:
+                elif Friends.query.filter_by(To_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,From_id=current_user.id,Status=1).first() == None:
                     flash(f'You and {Shopping_List_Of_username} are not friends yet.')
-                elif Friends.query.filter_by(From_id=current_user.id,To_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,Status=1).first().Priviledged == 0:
+                elif Friends.query.filter_by(To_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,From_id=current_user.id,Status=1).first().Priviledged == 0: # From_id and To_id here is the opposite as when we made them as friends. If A grants permission to B, we will look for the request that A sent in friend's table and change that priviledge to 1 but the other request will still be 0
                     # print('Executed',1)
-                    flash(f'You have not granted "{Shopping_List_Of_username}" the priviledge to edit your shopping list.')
+                    # print(Friends.query.filter_by(To_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,From_id=current_user.id,Status=1).first().Priviledged)
+                    # print(Friends.query.filter_by(From_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,To_id=current_user.id,Status=1).first().Priviledged)
+                    flash(f'"{Shopping_List_Of_username}" has not granted you the priviledge to edit his/her shopping list.')
                 else:
                     # print('executed',2)
                     name_friend_shoppinglist = Shopping_List_Of_username
