@@ -25,6 +25,49 @@
     <br/>
 
     <div>
+
+    </div>
+
+    <form method="POST" action="">
+        <div>
+            <label for="shopping">Shopping List of</label>
+            <input type="text" id='shopping' name='Shopping_List_Of' required>
+        </div>
+        <input type="submit" name='See_Shopping_List_Of' value="See">
+    </form>
+
+    <div>
+        {% if shopper|length > 1%}
+            <h3>{{shopper}}'s Shopping List</h3>
+            {% for item in Shopping_List_wanted %}
+                <label>Item Name: </label>
+                {{item.Item_Name}}
+                <br/>
+                <label>Date: </label>
+                {{item.Date.date()}}
+                <br/>
+                <label>Item Description: </label>
+                {{item.Description}}
+                <form method="POST" action="{{url_for('user.shopping_list')}}">
+                    <input type="hidden" name="id_shopping_item_delete" value="{{item.id}}">
+                    <input class="btn btn-danger" type="submit" name='shopping_item_delete' value="Delete">
+                </form>
+                <form method="POST" action="{{url_for('user.shopping_list')}}">
+                    <input type="hidden" name="id_shopping_item_update" value="{{item.id}}">
+                    <input class="btn btn-success" type="submit" name='shopping_item_update' value="Update">
+                </form>
+                <br/>
+                <br/>
+            {% endfor %}
+        {% endif %}
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+
+    <div>
         {% for item in items %}
             <label>Item Name: </label>
             {{item.Item_Name}}

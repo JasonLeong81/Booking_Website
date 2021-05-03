@@ -730,6 +730,9 @@ def ajax_payment():
 @user.route('/shopping_list',methods=['POST','GET'])
 @login_required
 def shopping_list():
+    Shopping_List_wanted = []
+    name_friend_shoppinglist = ''
+
     form = ShoppingListForm()
     items = Shopping.query.filter_by(user_id=current_user.id) # get all items that have user_id the same as current user's id
     if request.method == 'POST':
@@ -753,7 +756,29 @@ def shopping_list():
                 session['update_item_name'], session['update_item_description'] = Shopping.query.filter_by(id=int(request.form.get('id_shopping_item_update'))).first().Item_Name, Shopping.query.filter_by(id=int(request.form.get('id_shopping_item_update'))).first().Description
                 session['id_shopping_item_update'] = int(request.form.get('id_shopping_item_update'))
                 return redirect(url_for('user.update_shopping_item'))
-    return render_template('Shopping_List.html',title='MyShoppingList',form=form,items=items)
+
+        ### we want a search bar to show which shopping list we wanna see, default to our own self's ###
+        # Pending: who edited and
+        if 'See_Shopping_List_Of' in request.form:
+            if request.form['See_Shopping_List_Of'] == 'See':
+                Shopping_List_Of_username = request.form['Shopping_List_Of'].strip() # name of a user whose shopping list is what current_user wanna see
+                if User.query.filter_by(username=Shopping_List_Of_username).first() == None:
+                    flash(f'User "{Shopping_List_Of_username}" does not exist')
+                elif Shopping_List_Of_username == current_user.username:
+                    flash('Your shopping list has already been shown. ')
+                elif Friends.query.filter_by(From_id=current_user.id,To_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,Status=1).first() == None:
+                    flash(f'You and {Shopping_List_Of_username} are not friends yet.')
+                elif Friends.query.filter_by(From_id=current_user.id,To_id=User.query.filter_by(username=Shopping_List_Of_username).first().id,Status=1).first().Priviledged == 0:
+                    # print('Executed',1)
+                    flash(f'You have not granted "{Shopping_List_Of_username}" the priviledge to edit your shopping list.')
+                else:
+                    # print('executed',2)
+                    name_friend_shoppinglist = Shopping_List_Of_username
+                    Shopping_List_Of_id = User.query.filter_by(username=str(Shopping_List_Of_username)).first().id
+                    Shopping_List_wanted = Shopping.query.filter_by(user_id=int(Shopping_List_Of_id))
+
+
+    return render_template('Shopping_List.html',title='MyShoppingList',form=form,items=items,Shopping_List_wanted=Shopping_List_wanted,shopper=name_friend_shoppinglist)
 
 @user.route('/update_shopping_item',methods=['POST','GET'])
 @login_required
