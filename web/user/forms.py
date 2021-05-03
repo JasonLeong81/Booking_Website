@@ -38,6 +38,9 @@ class ShoppingListForm(FlaskForm):
     Description = StringField('Item description',default='')
     submit = SubmitField('Add')
 
-
+class MakePriviledged(FlaskForm):
+    Good_Friend_username = StringField("Friend's username", validators=[DataRequired()], default='')
+    submit_grant = SubmitField('Grant Priviledge.')
+    submit_remove = SubmitField('Remove Priviledge.')
 
 

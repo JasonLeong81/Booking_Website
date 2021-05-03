@@ -16,7 +16,9 @@
     </form>
 
 
-
+    <br/>
+    <br/>
+    <br/>
 
     <div>
         <form method="POST" action="{{url_for('main.home')}}">
@@ -24,8 +26,7 @@
             <div style="width:50%;" class="input-group mb-3">
                 {{form2.Friend_username.label(class="input-group-text",id="inputGroup-sizing-lg")}}
                 {{form2.Friend_username(class="form-control")}}
-            </div>
-            <div>
+
                 {{form2.submit(class="btn btn-outline-success")}}
             </div>
 

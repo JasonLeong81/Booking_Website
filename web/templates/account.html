@@ -11,6 +11,25 @@
     <br/>
     <br/>
 
+
+    <div>
+        <form method="POST" action="">
+            {{form3.hidden_tag()}}
+            <div style="min-width:45%;" class="input-group mb-3">
+                {{form3.Good_Friend_username.label(class="input-group-text",id="inputGroup-sizing-lg")}}
+                {{form3.Good_Friend_username(class="form-control")}}
+            </div>
+            <div>
+                {{form3.submit_grant(class="btn btn-outline-success")}}
+                {{form3.submit_remove(class="btn btn-outline-danger")}}
+            </div>
+        </form>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
     <div>
         <h3>My Friends</h3>
         {% for i in myFriends %}

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session, abort
-from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm, ShoppingListForm
+from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm, ShoppingListForm, MakePriviledged
 from web.models import User, Feedback, Booking, Messages, Grocery, Recipes, Shopping, Friends
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
@@ -30,6 +30,55 @@ def account():
     else:
         resp = {"result": 401,
                 "data": {"message": "user no login"}}
+
+    ### Make/Remove Priviledged ###
+    form3 = MakePriviledged()
+    if request.method == 'POST':
+        if form3.validate_on_submit():
+            # what we get back from hidden tag in html form is the username of the user whose current_user wants to make priviledged
+            # so we query that id in the friends table with status = 1 (this means they are friends) and toggle Priviledged from 0 to 1. Note here that the From_id and To_id can be any of these two users because of how the accepting of friend request works in this code base
+
+            if form3.submit_grant.data == True and form3.submit_remove.data == False:
+                try:
+                    user_to_be_made_priviledged_username = form3.Good_Friend_username.data.strip()
+                    user_exist = User.query.filter_by(username=user_to_be_made_priviledged_username).first()
+                    if user_exist == None:
+                        flash(f'User {user_to_be_made_priviledged_username} does not exist.')
+                        raise ValueError # so that else would not run
+                    user_to_be_made_priviledged_id = User.query.filter_by(username=user_to_be_made_priviledged_username).first().id
+                    two_user_are_friends = Friends.query.filter_by(To_id=int(user_to_be_made_priviledged_id), Status=1,From_id=current_user.id).first()
+                    if two_user_are_friends == None: # see if they are friends
+                        flash(f'You and {user_to_be_made_priviledged_username} are not friends so {user_to_be_made_priviledged_username} will not be able to edit your shopping list.')
+                        raise ValueError  # just for fun
+                except Exception as m:
+                    print(m,1)
+                    pass
+                else:
+                    db.session.query(Friends).filter(Friends.To_id == int(user_to_be_made_priviledged_id) ,Friends.Status==1,Friends.From_id==current_user.id).update({Friends.Priviledged: 1})  # toggling Friend's table Priviledged from 0 to 1 by making sure that they are friends
+                    db.session.commit()
+                    flash(f'Your friend {user_to_be_made_priviledged_username} can now edit your shopping list!')
+            elif form3.submit_remove.data == True and form3.submit_grant.data == False:
+                try:
+                    user_to_be_made_priviledged_username = form3.Good_Friend_username.data.strip()
+                    user_exist = User.query.filter_by(username=user_to_be_made_priviledged_username).first()
+                    if user_exist == None:
+                        flash(f'User {user_to_be_made_priviledged_username} does not exist.')
+                        raise ValueError # so that else would not run
+                    user_to_be_made_priviledged_id = User.query.filter_by(username=user_to_be_made_priviledged_username).first().id
+                    two_user_are_friends = Friends.query.filter_by(To_id=int(user_to_be_made_priviledged_id), Status=1,From_id=current_user.id).first()
+                    if two_user_are_friends == None: # see if they are friends # we can choose to check any columns not just From_id
+                        flash(f'You and {user_to_be_made_priviledged_username} are not friends so {user_to_be_made_priviledged_username} will not be able to edit your shopping list.')
+                        raise ValueError # just for fun
+                except Exception as m:
+                    # flash(f'You and {user_to_be_made_priviledged_username} are not friends so {user_to_be_made_priviledged_username} will not be able to edit your shopping list.')
+                    print(m,2)
+                    # pass
+                else:
+                    db.session.query(Friends).filter(Friends.To_id == int(user_to_be_made_priviledged_id) ,Friends.Status==1,Friends.From_id==current_user.id).update({Friends.Priviledged: 0})  # toggling Friend's table Priviledged from 0 to 1 by making sure that they are friends
+                    db.session.commit()
+                    flash(f'Your friend {user_to_be_made_priviledged_username} can no longer edit your shopping list!')
+            return redirect(url_for('user.account'))
+
 
     ### Remove friends ###
     if request.method == 'POST':
@@ -71,7 +120,7 @@ def account():
                 ### Once accepted, we insert a row into Friend's table but with Friend_of_id being the person whose current_user accepted as friend, from_id and to_id will be swapped, and the date would be datetime.today() ###
                 # this is optional, since we can always tell users to add each other if they wanna be friends #
                 person_whose_currentuser_accepted = Friends.query.filter_by(id=int(request.form['id_in_FriendsTable'])).first().From_id # person who sent current_user the friend request
-                success_friend_request_response = Friends(Date=datetime.today(), From=current_user, To=User.query.filter_by(id=person_whose_currentuser_accepted).first(), Status=1, Friend_of_id=person_whose_currentuser_accepted)
+                success_friend_request_response = Friends(Date=datetime.today(), From=current_user, To=User.query.filter_by(id=person_whose_currentuser_accepted).first(), Status=1, Friend_of_id=person_whose_currentuser_accepted,Priviledged=0)
                 db.session.add(success_friend_request_response)
                 db.session.commit()
                 # print('Done'*100)
@@ -140,7 +189,7 @@ def account():
     form2.new_username.data = ''
 
 
-    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2,fr=Friend_Request,myFriends=f)
+    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2,fr=Friend_Request,myFriends=f,form3=form3)
 
 @user.route('/login',methods=['GET','POST'])
 def login():

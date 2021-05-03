@@ -87,6 +87,7 @@ class Friends(db.Model,UserMixin):
     To_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
     Status = db.Column(db.Integer, nullable=False) # 0 -> Pending, 1 -> Accepted, 2 -> Rejected
     Friend_of_id = db.Column(db.Integer,nullable=False) # friend of id of someone in user table # if not a friend yet, then this value is 0
+    Priviledged = db.Column(db.Integer,nullable=True) # if someone is priviledged, then the From_id (in this table) can edit the To_id's shopping list # Priviledged 0 is just friends and 1 means priviledged
 
     # From = db.relationship('User', foreign_keys=[From_id])
     # To = db.relationship('User', foreign_keys=[To_id])
