@@ -15,6 +15,9 @@ admin = Blueprint('admin',__name__) # name, import_name (for easy navigation fro
 @admin.route('/admin_Account',methods=['GET','POST'])
 @login_required
 def admin_Account():
+    # Pending: create a user, delete a user (and all others. Learn if needed.), reply feedback, CTR of every button and IP addresses, 
+
+
     find_user = None
     hair_cut_appointments = None
     test = f""" select * from Booking where date == '{date.today()}'; """
