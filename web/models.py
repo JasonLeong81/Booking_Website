@@ -76,7 +76,7 @@ class Shopping(db.Model,UserMixin):
     Item_Name = db.Column(db.String(100),nullable=False)
     Date = db.Column(db.DateTime,nullable=False) # default to datetime.today()
     Description = db.Column(db.String(500),nullable=False)
-    # Edited_by =
+    Edited_by = db.Column(db.Integer, nullable=False) # username of who edited it
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
 
 class Friends(db.Model,UserMixin):

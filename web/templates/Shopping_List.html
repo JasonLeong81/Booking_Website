@@ -48,6 +48,9 @@
                 <br/>
                 <label>Item Description: </label>
                 {{item.Description}}
+                <br/>
+                <label>Last Edited by: </label>
+                {{item.Edited_by}}
                 <form method="POST" action="{{url_for('user.shopping_list')}}">
                     <input type="hidden" name="id_shopping_item_delete" value="{{item.id}}">
                     <input class="btn btn-danger" type="submit" name='shopping_item_delete' value="Delete">
@@ -77,6 +80,9 @@
             <br/>
             <label>Item Description: </label>
             {{item.Description}}
+            <br/>
+            <label>Last Edited by: </label>
+            {{item.Edited_by}}
             <form method="POST" action="{{url_for('user.shopping_list')}}">
                 <input type="hidden" name="id_shopping_item_delete" value="{{item.id}}">
                 <input class="btn btn-danger" type="submit" name='shopping_item_delete' value="Delete">

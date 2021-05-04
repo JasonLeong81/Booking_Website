@@ -742,7 +742,7 @@ def shopping_list():
             Item_Name = form.Item.data.strip()
             Date = datetime.today()
             Description = form.Description.data.strip()
-            add_new_shopping_item = Shopping(Item_Name=Item_Name,Date=Date,Description=Description,owner=current_user)
+            add_new_shopping_item = Shopping(Item_Name=Item_Name,Date=Date,Description=Description,owner=current_user,Edited_by=current_user.username)
             db.session.add(add_new_shopping_item)
             db.session.commit()
             return redirect(url_for('user.shopping_list'))
@@ -788,7 +788,7 @@ def shopping_list():
 @login_required
 def update_shopping_item():
     if request.method == 'POST':
-        db.session.query(Shopping).filter(Shopping.id == session['id_shopping_item_update']).update({Shopping.Item_Name: request.form.get('new_Item_Name').strip(),Shopping.Date:datetime.today(),Shopping.Description:request.form.get('new_Item_Description').strip()}) # updating rows in database
+        db.session.query(Shopping).filter(Shopping.id == session['id_shopping_item_update']).update({Shopping.Item_Name: request.form.get('new_Item_Name').strip(),Shopping.Date:datetime.today(),Shopping.Description:request.form.get('new_Item_Description').strip(),Shopping.Edited_by:current_user.username}) # updating rows in database
         db.session.commit()
         flash('One item has been update.')
         session.pop('update_item_name', None)
