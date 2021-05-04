@@ -145,12 +145,6 @@ import pandas as pd
 # print(pd.Timestamp.today().date())
 
 
-
-
-# Date = datetime(1,1,1,1,1,1)
-# print(Date.date())
-
-
 class Item():
     def __init__(self,owner,d=datetime.today()):
         self.owner = owner
@@ -162,13 +156,20 @@ item = Item('jason')
 # LIST = [1,2,3]*10
 # print(len(LIST))
 
-ddd = '123/123'
-temp = ddd.split('/')
-print(temp[0],temp[1])
+# ddd = '123/123'
+# temp = ddd.split('/')
+# print(temp[0],temp[1])
 
 
 
+# Date = datetime.today()
+# d = Date.strftime('%Y-%m-%dT%H:%M')
+# print(d)
 
+# today = datetime(datetime.today().year, datetime.today().month, datetime.today().day, 0, 0, 0)
+# tomorrow = today + timedelta(hours=24)
+# print(today)
+# print(tomorrow)
 
 
 

@@ -26,10 +26,9 @@ class User(db.Model,UserMixin):
     logged_in = db.Column(db.String(10), nullable=True)
     admin = db.Column(db.String(10), nullable=True)
     shopping_info = db.relationship('Shopping',backref='owner',lazy='subquery')
-
     Friend_From = db.relationship('Friends',backref='From',lazy='subquery', foreign_keys='Friends.From_id')
     Friend_To = db.relationship('Friends', backref='To', lazy='subquery', foreign_keys='Friends.To_id')
-
+    Hair_Cut_Appointments = db.relationship('Booking_Hair_Cut',backref='owner',lazy='subquery')
 
 
 class Feedback(db.Model,UserMixin):
@@ -93,7 +92,11 @@ class Friends(db.Model,UserMixin):
     # To = db.relationship('User', foreign_keys=[To_id])
     # Friend_of = db.relationship('User', foreign_keys=[Friend_of_id])
 
-
+class Booking_Hair_Cut(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    Date = db.Column(db.DateTime,nullable=False) # datetime.date
+    Service = db.Column(db.String(100),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False) # user is the User table
 
 
 

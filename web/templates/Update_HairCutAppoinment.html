@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update Hair Cut Appointment</h1>
+    <form method="POST" action="{{url_for('user.Update_Hair_Cut_Appointment')}}">
+        <div>
+            <label for="date">Date: </label>
+            <input type="datetime-local" id='date' name="Date" required value="{{default_booking_date}}">
+        </div>
+        <div>
+            <label for="service">Service: </label>
+            <select id='service' name="Service" required>
+                <option value="Normal">Normal</option>
+            </select>
+        </div>
+        <input type="submit" value="Update" name="Update_Hair_Cut_appointment">
+    </form>
+
+{% endblock content %}

@@ -1,10 +1,11 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for, session
 from web.main.forms import FeedbackForm, CourtBookingForm, MessagesForm
 from web import db,mail, Message
-from web.models import Feedback, Booking, Messages, User
+from web.models import Feedback, Booking, Messages, User, Booking_Hair_Cut
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from sqlalchemy import cast, Date
 
 admin = Blueprint('admin',__name__) # name, import_name (for easy navigation from root)
 # cannot have a function same as blueprint
@@ -15,6 +16,7 @@ admin = Blueprint('admin',__name__) # name, import_name (for easy navigation fro
 @login_required
 def admin_Account():
     find_user = None
+    hair_cut_appointments = None
     test = f""" select * from Booking where date == '{date.today()}'; """
 
     # db.session.query(User).filter(User.username == 'admin').update({User.admin: 'True'})
@@ -70,9 +72,24 @@ def admin_Account():
             date_wanted = request.form['date_court_booking']
             test = f""" select * from Booking where date == '{date_wanted}'; """
 
+        if 'Show_Hair_Cut_Appointments' in request.form:
+            if request.form['Show_Hair_Cut_Appointments'] == 'Show':
+                # a = request.form['Date_For_Hair_Cut_Appointments']
+                # print(type(a),a)
+                if len(Booking_Hair_Cut.query.all()) > 0:
+                    day_wanted_show_appointment_hair_cut = request.form['Date_For_Hair_Cut_Appointments']
+                    today = datetime(int(day_wanted_show_appointment_hair_cut[0:4]),int(day_wanted_show_appointment_hair_cut[5:7]),int(day_wanted_show_appointment_hair_cut[8:]),0,0,0)
+                    tomorrow = today + timedelta(hours=24)
+                    # print(today,tomorrow)
+                    hair_cut_appointments = Booking_Hair_Cut.query.filter(Booking_Hair_Cut.Date >= today,Booking_Hair_Cut.Date < tomorrow).all()
+                    # print(hair_cut_appointments)
+                else:
+                    flash('No rows in Booking Hair Cut database.')
+
+
     # test = f""" select date from Booking; """
     test = db.session.execute(test)
-    return render_template('admin.html',title='AdminPage',users=users,courts_booked=courts_booked,feedbacks=feedbacks,find_user=find_user,test=test,today=date.today())
+    return render_template('admin.html',title='AdminPage',users=users,courts_booked=courts_booked,feedbacks=feedbacks,find_user=find_user,test=test,today=date.today(),hair_cut_appointments=hair_cut_appointments)
 
 @admin.route('/recover_password',methods=['GET','POST'])
 @login_required
@@ -82,3 +99,6 @@ def recover_password():
     flash(f"Customer {User.query.filter_by(id=session['user_id_recoverPassword']).first().username}'s password has been changed to 123. Please notify customer.")
     session.pop('user_id_recoverPassword',None)
     return redirect(url_for('admin.admin_Account'))
+
+
+

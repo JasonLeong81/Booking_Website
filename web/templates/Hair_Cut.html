@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Hair Cut Booking</h1>
+    <form method="POST" action="{{url_for('user.HairCut')}}">
+        <div>
+            <label for="date">Date: </label>
+            <input type="datetime-local" id='date' name="Date" required value="{{default_booking_date}}">
+        </div>
+        <div>
+            <label for="service">Service: </label>
+            <select id='service' name="Service" required>
+                <option value="Normal">Normal</option>
+            </select>
+        </div>
+        <input type="submit" value="Book" name="Book_Hair_Cut_appointment">
+    </form>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+
+
+    <h3>My Hair Cut Appointments</h3>
+    <div>
+        {% for appointment in appointments %}
+            Date: {{appointment.Date}}
+            <br/>
+            Service: {{appointment.Service}}
+            <br/>
+            <form method="POST" action="{{url_for('user.HairCut')}}">
+                <div>
+                    <input type="hidden" name='booking_hair_cut_appointment_id' value="{{appointment.id}}">
+                    <input class="btn btn-success" type="submit" name='update' value="Update">
+                    <input class="btn btn-danger" type="submit" name='cancel' value="Cancel">
+                </div>
+            </form>
+            <br/>
+        {% endfor %}
+    </div>
+
+
+
+
+
+
+{% endblock content %}

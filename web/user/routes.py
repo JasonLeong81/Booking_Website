@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session, abort
 from web.user.forms import RegistrationForm, LoginForm, UpdateEmailForm, UpdatePasswordForm, UpdateUsernameForm, ShoppingListForm, MakePriviledged
-from web.models import User, Feedback, Booking, Messages, Grocery, Recipes, Shopping, Friends
+from web.models import User, Feedback, Booking, Messages, Grocery, Recipes, Shopping, Friends, Booking_Hair_Cut
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
 from web import mail, Message, db, main, app
@@ -797,6 +797,58 @@ def update_shopping_item():
         return redirect(url_for('user.shopping_list'))
     return render_template('update_shopping_item.html',title='UpdateShoppingItem',Old_Item_Name=session['update_item_name'],Old_Item_Description=session['update_item_description'])
 
+@user.route('/hair_cut',methods=['POST','GET'])
+@login_required
+def HairCut():
+    if request.method == "POST":
+        if 'Book_Hair_Cut_appointment' in request.form:
+            if request.form['Book_Hair_Cut_appointment'] == 'Book':
+                service, Date_raw = str(request.form['Service'].strip()),request.form['Date']
+                Date = datetime(int(Date_raw[0:4]),int(Date_raw[5:7]),int(Date_raw[8:10]),int(Date_raw[11:13]),int(Date_raw[14:]))
+                # print(service,11111111111111111111111111,type(service))
+                # print(Date,1111111111111111111111111,type(Date)) # 2021-05-04T16:55 is in the form of a string
+                Appointment = Booking_Hair_Cut(Date=Date,Service=service,owner=current_user)
+                db.session.add(Appointment)
+                db.session.commit()
+                flash('Your hair cut appointment has been booked.')
 
+        if "update" in request.form: # update appointment
+            if request.form['update'] == 'Update':
+                booking_hair_cut_appointment_id = int(request.form['booking_hair_cut_appointment_id'])
+                session['booking_hair_cut_appointment_id'] = booking_hair_cut_appointment_id
+                return redirect(url_for('user.Update_Hair_Cut_Appointment'))
 
+        if "cancel" in request.form: # cancel appointment
+            if request.form['cancel'] == 'Cancel':
+                booking_hair_cut_appointment_id = int(request.form['booking_hair_cut_appointment_id'])
+                booking_hair_cut_appointment_ToBeDeleted = Booking_Hair_Cut.query.filter_by(id=booking_hair_cut_appointment_id).first()
+                db.session.delete(booking_hair_cut_appointment_ToBeDeleted)
+                db.session.commit()
+                flash('Your hair cut appointment has been cancelled.')
+                return redirect(url_for('user.HairCut'))
 
+    appointments = Booking_Hair_Cut.query.filter_by(user_id=current_user.id)
+    default_booking_date_temp = datetime.today()
+    default_booking_date = default_booking_date_temp.strftime('%Y-%m-%dT%H:%M')
+
+    if appointments.first() == None:
+        return render_template('Hair_Cut.html', title='Hair_Cut',default_booking_date=str(default_booking_date))
+    else:
+        return render_template('Hair_Cut.html',title='Hair_Cut',appointments=appointments,default_booking_date=str(default_booking_date))
+
+@user.route('/updated_hair_cut_appointment',methods=['POST','GET'])
+@login_required
+def Update_Hair_Cut_Appointment():
+    if request.method == 'POST':
+        if "Update_Hair_Cut_appointment" in request.form:
+            if request.form['Update_Hair_Cut_appointment'] == 'Update':
+                service, Date_raw = str(request.form['Service'].strip()),request.form['Date']
+                Date = datetime(int(Date_raw[0:4]),int(Date_raw[5:7]),int(Date_raw[8:10]),int(Date_raw[11:13]),int(Date_raw[14:]))
+                db.session.query(Booking_Hair_Cut).filter(Booking_Hair_Cut.id == session['booking_hair_cut_appointment_id']).update({Booking_Hair_Cut.Date:Date,Booking_Hair_Cut.Service: service})
+                db.session.commit()
+                flash('Your hair cut appointment has been updated.')
+                session.pop('booking_hair_cut_appointment_id',None)
+                return redirect(url_for('user.HairCut'))
+    default_booking_date_temp = datetime.today()
+    default_booking_date = default_booking_date_temp.strftime('%Y-%m-%dT%H:%M')
+    return render_template('Update_HairCutAppoinment.html', title='Update_Hair_Cut_Appoinment',default_booking_date=default_booking_date)

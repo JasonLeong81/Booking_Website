@@ -159,4 +159,34 @@
     <br>
     <br>
     <br>
+
+    <div>
+        <form method="POST" action="{{url_for('admin.admin_Account')}}">
+            <div>
+                <input type="date" value="{{today}}" required name="Date_For_Hair_Cut_Appointments">
+            </div>
+            <input type="submit" value="Show" name="Show_Hair_Cut_Appointments">
+        </form>
+    </div>
+
+    <div>
+        {% if hair_cut_appointments is not none %}
+            {% for i in hair_cut_appointments %}
+                Date: {{i.Date}}
+                <br/>
+                Service: {{i.Service}}
+                <br/>
+                Customer Name: {{i.owner.username}}
+                <br/>
+                <br/>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+
 {% endblock content %}
