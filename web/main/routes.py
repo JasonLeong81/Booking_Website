@@ -31,7 +31,7 @@ def home():
 
     form = FeedbackForm()
     if form.validate_on_submit():
-        feedback = Feedback(feedback=form.feedback.data,owner=current_user)
+        feedback = Feedback(feedback=form.feedback.data,owner=current_user,Feedback_Status=0)
         db.session.add(feedback)
         db.session.commit()
         flash('You feedback has been received in good order. Thank you for your time and feedback.')

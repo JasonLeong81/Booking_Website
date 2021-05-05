@@ -15,7 +15,7 @@ admin = Blueprint('admin',__name__) # name, import_name (for easy navigation fro
 @admin.route('/admin_Account',methods=['GET','POST'])
 @login_required
 def admin_Account():
-    # Pending: create a user, delete a user (and all others. Learn if needed.), reply feedback, CTR of every button and IP addresses, 
+    # Pending: create a user, CTR of every button and IP addresses of who logged in and where,
 
 
     find_user = None
@@ -30,6 +30,23 @@ def admin_Account():
         users = User.query.all()
 
     if request.method == 'POST':
+
+        if 'Reply_customer_feedback' in request.form:
+            if request.form['Reply_customer_feedback'] == 'Reply':
+                id_feedback_table_to_be_updated = int(request.form['id_feedback_table_to_update'])
+                session['id_feedback_table_to_be_updated'] = id_feedback_table_to_be_updated
+                return redirect(url_for('admin.ReplyFeedback'))
+
+
+        if 'submit_delete_user' in request.form: # deleting a user
+            if request.form['submit_delete_user'] == 'Delete User':
+                id_of_user_to_be_deleted = int(request.form['delete_user'])
+                user_to_be_deleted = User.query.filter_by(id=id_of_user_to_be_deleted).first()
+                db.session.delete(user_to_be_deleted)
+                db.session.commit()
+                flash('User has been deleted. This cannot be undone.')
+                return redirect(url_for('admin.admin_Account'))
+
 
         if 'make_remove_admin' in request.form: ### make admin
             if request.form['make_remove_admin'] == 'Make Admin':
@@ -64,7 +81,7 @@ def admin_Account():
                     find_user.append(user)
                 else:
                     flash(f'User with id {int(request.form["find_user_by_id"])} not found.')
-                    return render_template('admin.html', title='AdminPage', users=users, courts_booked=courts_booked,feedbacks=feedbacks)
+                    return redirect(url_for('admin.admin_Account'))
 
         if 'recover_password' in request.form:
             user_id = int(request.form['recover_password'])
@@ -104,4 +121,17 @@ def recover_password():
     return redirect(url_for('admin.admin_Account'))
 
 
+@admin.route('/reply_feedback',methods=['GET','POST'])
+@login_required
+def ReplyFeedback():
+    customer_feedback = Feedback.query.filter_by(id=int(session['id_feedback_table_to_be_updated'])).first().feedback
+    if request.method == 'POST':
+        if 'Submit_Admin_Feedback' in request.form:
+            if request.form['Submit_Admin_Feedback'] == 'Reply':
+                db.session.query(Feedback).filter(Feedback.id==int(session['id_feedback_table_to_be_updated'])).update({Feedback.response_feedback: str(request.form['Admin_Feedback'].strip()),Feedback.Feedback_Status:1})
+                db.session.commit()
+                flash(f"""A Feedback response to user "{Feedback.query.filter_by(id=int(session['id_feedback_table_to_be_updated'])).first().owner.username}" has been sent.""")
+                session.pop('id_feedback_table_to_be_updated',None)
+                return redirect(url_for('admin.admin_Account'))
+    return render_template('replyfeedback.html',title='Reply_Feedback',customer_feedback=customer_feedback)
 

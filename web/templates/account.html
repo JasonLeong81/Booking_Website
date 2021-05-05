@@ -95,6 +95,7 @@
         <tr>
           <th scope="col">Feedback</th>
           <th scope="col">Delete</th>
+          <th scope="col">Response</th>
         </tr>
       </thead>
           <tbody>
@@ -107,6 +108,11 @@
                             <input class="btn btn-danger" type="submit" name='delete_feedback' value="Delete">
                       </form>
                   </td>
+                  {% if i.Feedback_Status == 1 %}
+                    <td>{{i.response_feedback}}</td>
+                  {% else %}
+                    <td>No reply yet.</td>
+                  {% endif %}
                 </tr>
                 {% endfor %}
           </tbody>

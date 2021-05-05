@@ -4,6 +4,13 @@
     <h1>Admin Page</h1>
     <h3>Welcome to the team {{current_user.username}}!</h3>
 
+    <br>
+    <br>
+    <br>
+
+
+
+
 
     <br>
     <br>
@@ -12,9 +19,9 @@
     <br>
     <br>
         <form method="POST" action="#">
-            <label for="create_user">Create a user</label>
-            <input type="number" required min="1" name="create_user" id="create_user">
-            <input type="submit" name="submit_create_user" value="Create User">
+            <label for="delete_user">Delete a user with ID</label>
+            <input type="number" required min="1" name="delete_user" id="delete_user" step="1">
+            <input type="submit" name="submit_delete_user" value="Delete User">
         </form>
     <br>
     <br>
@@ -67,7 +74,7 @@
     <br>
     <br>
     <form method="POST">
-        <label for="new_admin">New Admin </label>
+        <label for="new_admin">Username </label>
         <input id="new_admin" type="text" required placeholder="John" name="new_admin">
         <input type="submit" name="make_remove_admin" value="Make Admin">
         <input type="submit" name="make_remove_admin" value="Remove Admin">
@@ -82,7 +89,7 @@
     <br>
     <form method="POST">
         <label for="find_user">Find a user </label>
-        <input min="1" required id="find_user" type="number" required placeholder="Claire" name="find_user_by_id">
+        <input min="1" required id="find_user" type="number" required placeholder="1" name="find_user_by_id">
         <input type="submit" name="find_user" value="Find User">
     </form>
     <br>
@@ -128,17 +135,29 @@
     <br>
     <br>
     <br>
+
+
     <h3>List of feedbacks</h3>
     Total feedbacks: {{feedbacks|length}}
     <br>
     <br>
+
+
     {% for i in feedbacks %}
         feedback: {{i.feedback}}
         <br>
         user: {{i.owner.username}}
         <br>
+            <form method="POST" action="#">
+                <input type="hidden" name='id_feedback_table_to_update' value="{{i.id}}">
+                <label for="reply_customer_feedback"></label>
+                <input type="submit" id='reply_customer_feedback' value="Reply" name="Reply_customer_feedback">
+            </form>
+        <br>
         <br>
     {% endfor %}
+
+
     <br>
     <br>
     <br>

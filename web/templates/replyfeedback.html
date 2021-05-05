@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Reply Feedback</h1>
+    <p>{{customer_feedback}}</p>
+    <form method="POST" action="#">
+        <div>
+            <label for="admin_feedback"></label>
+            <input type="text" id="admin_feedback" name="Admin_Feedback">
+        </div>
+        <input type="submit" name="Submit_Admin_Feedback" value="Reply">
+    </form>
+{% endblock content %}
