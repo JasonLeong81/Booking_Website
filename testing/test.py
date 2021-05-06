@@ -171,6 +171,16 @@ item = Item('jason')
 # print(today)
 # print(tomorrow)
 
+from bcrypt import *
+
+# hashed = hashpw(bytes('jason', encoding='utf-8'), gensalt())
+# print(hashed,type(hashed))
+# hashed = hashed.decode("utf-8", "ignore")
+# print(hashed,type(hashed))
+# by = bytes(hashed, 'utf-8')
+# print(by,type(by))
+# print(checkpw(bytes('jason',encoding='utf-8'),by))
+
 
 
 

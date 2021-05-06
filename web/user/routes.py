@@ -204,6 +204,7 @@ def login():
             flash('This email is not registered in our servers.')
             return render_template('login.html', title='Login', form=form)
         p = user.password
+        p = bytes(p, 'utf-8')
         if user and checkpw(bytes(form.password.data,encoding='utf-8'),p):
             login_user(user)
             db.session.query(User).filter(User.id == current_user.id).update({User.logged_in: 'True'})
@@ -229,6 +230,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit(): # from Flaskform
         hashed = hashpw(bytes(form.password.data,encoding='utf-8'),gensalt())
+        hashed = hashed.decode("utf-8", "ignore") # decode this into string for postgres
         user = User(username=form.username.data,email=form.email.data,password=hashed)
         if User.query.filter_by(username=form.username.data.strip()).first():
             flash('This username has been taken. Please try a different one.')
