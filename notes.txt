@@ -34,7 +34,6 @@ db.session.commit()
 
 
 
-### delete a user and delete all related fields
 
 
 ### admins
@@ -45,4 +44,4 @@ dad@gmail.com, 1, dad
 evelyn@gmail.com, 1, evelyn
 tiffany@gmail.com, 1, tiffany
 
-
+### Features to implement: notifications, auto delete, advertisement structure, different chat rooms,
