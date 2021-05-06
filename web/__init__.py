@@ -42,7 +42,7 @@ def Make_admins():
         user = User.query.filter_by(email=emails).first()
         print(user)
         if not user:
-            hashpw(bytes(str(admins[emails][1]), encoding='utf-8'), gensalt())
+            hashed = hashpw(bytes(str(admins[emails][1]), encoding='utf-8'), gensalt())
             hashed = hashed.decode("utf-8", "ignore")
             user = User(username=admins[emails][0], password=hashed,email=emails, admin=admins[emails][2])
             db.session.add(user)
