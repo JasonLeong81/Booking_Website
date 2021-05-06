@@ -813,6 +813,7 @@ def HairCut():
                 db.session.add(Appointment)
                 db.session.commit()
                 flash('Your hair cut appointment has been booked.')
+                return redirect(url_for('user.HairCut'))
 
         if "update" in request.form: # update appointment
             if request.form['update'] == 'Update':
