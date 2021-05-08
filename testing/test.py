@@ -264,6 +264,16 @@ available_time(occupied)
 # print(don)
 
 
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__)) # __file__ means current file
+# print(os.path.realpath(__file__))
+# print(__file__)
+for root, dirs, files in os.walk(dir_path):
+    # print('root',root)
+    # print('dirs',dirs)
+    for file in files:
+        if file.endswith('t.py'):
+            print(root + '/' + str(file))
 
 
 
