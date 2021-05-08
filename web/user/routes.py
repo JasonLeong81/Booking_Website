@@ -32,23 +32,8 @@ def account():
         resp = {"result": 401,
                 "data": {"message": "user no login"}}
     ### Profile picture ###
-    # pp = os.path.join(app.root_path, 'static\pictures\profile_pictures', str(current_user.id)+'.png')
-    profile_picture = False
-    # checking whether current user has a profile picture, if not then we will use male.png as default
-    for root, dirs, files in os.walk(url_for('static',filename='pictures/profile_pictures/')):
-        # print('root',root)
-        # print('dirs',dirs)
-        for file in files:
-            if file.endswith(f'{current_user.id}.py'):
-                print(root + '/' + str(file))
-                pp = url_for('static', filename='pictures/profile_pictures/' + str(current_user.id) + '.png')
-                profile_picture = True
-    if profile_picture == False:
-        pp = url_for('static', filename='pictures/male.png')
 
 
-
-    print(pp,1111111111111111111111111111)
     if request.method == 'POST':
         if 'Change_Profile_Picture' in request.form:
             if request.form['Change_Profile_Picture'] == 'Confirm':
@@ -63,6 +48,22 @@ def account():
                 profile_picture.save(picture_filename_in_database)
                 flash('Profile Picture has been updated.')
                 return redirect(url_for('user.account'))
+
+    # pp = os.path.join(app.root_path, 'static\pictures\profile_pictures', str(current_user.id)+'.png')
+    profile_picture = False
+    # checking whether current user has a profile picture, if not then we will use male.png as default
+    for root, dirs, files in os.walk('web/static/pictures/profile_pictures'):
+        # print('root',root)
+        # print('dirs',dirs)
+        for file in files:
+            if file.endswith(f'{current_user.id}.png'):
+                print(root + '/' + str(file))
+                pp = url_for('static', filename='pictures/profile_pictures/' + str(current_user.id) + '.png')
+                profile_picture = True
+    if profile_picture == False:
+        pp = url_for('static', filename='pictures/male.png')
+    print(pp,1111111111111111111111111111,profile_picture)
+
 
 
     ### Make/Remove Priviledged ###
