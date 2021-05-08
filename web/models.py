@@ -18,6 +18,9 @@ class User(db.Model,UserMixin):
     username = db.Column(db.String(30), unique=True, nullable=False)  # string of max 20 len
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200),nullable=False)
+    Gender = db.Column(db.Integer,nullable=True) # 0 is male and 1 is female
+    # Profile_picture = db.Column(db.,nullable=True)
+
     feedback = db.relationship('Feedback',backref='owner',lazy='subquery') # Feedback model # backref allows us to do Feedback.query.all()[0].owner.(attributes of owner who created the feedback) lazy (select,joined,dynamic,subquery) # uselist = True means we can have more than one child
     court_booking = db.relationship('Booking',backref='owner',lazy='subquery')
     messages = db.relationship('Messages',backref='owner',lazy='subquery')

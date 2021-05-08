@@ -6,6 +6,7 @@ from bcrypt import *
 from web import mail, Message, db, main, app
 from datetime import datetime
 from web.admin.routes import admin
+import os
 
 user = Blueprint('user',__name__)
 
@@ -30,6 +31,25 @@ def account():
     else:
         resp = {"result": 401,
                 "data": {"message": "user no login"}}
+    ### Profile picture ###
+    # pp = os.path.join(app.root_path, 'static\pictures\profile_pictures', str(current_user.id)+'.png')
+    pp = url_for('static',filename='pictures/profile_pictures/'+str(current_user.id)+'.png')
+    print(pp,1111111111111111111111111111)
+    if request.method == 'POST':
+        if 'Change_Profile_Picture' in request.form:
+            if request.form['Change_Profile_Picture'] == 'Confirm':
+                profile_picture = request.files['Profile_Picture']
+                # print(dir(profile_picture))
+                file_name,file_extension = os.path.splitext(profile_picture.filename)
+                # print('file_name: ',file_name)
+                # print('file_extension: ',file_extension)
+                # print('app.root_path: ',app.root_path)
+                picture_filename_in_database = os.path.join(app.root_path,'static\pictures\profile_pictures',str(current_user.id)+f'{file_extension}')
+                # print('picture_filename_in_database: ',picture_filename_in_database)
+                profile_picture.save(picture_filename_in_database)
+                flash('Profile Picture has been updated.')
+                return redirect(url_for('user.account'))
+
 
     ### Make/Remove Priviledged ###
     form3 = MakePriviledged()
@@ -191,7 +211,7 @@ def account():
     form2.new_username.data = ''
 
 
-    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2,fr=Friend_Request,myFriends=f,form3=form3)
+    return render_template('account.html',title='Account',r=resp,courts_booked=courts_booked,feedbacks_provided=feedbacks_provided,form=form,form1=form1,form2=form2,fr=Friend_Request,myFriends=f,form3=form3,pp=pp)
 
 @user.route('/login',methods=['GET','POST'])
 def login():

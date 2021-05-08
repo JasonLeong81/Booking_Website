@@ -181,7 +181,87 @@ from bcrypt import *
 # print(by,type(by))
 # print(checkpw(bytes('jason',encoding='utf-8'),by))
 
+# input : list of occupied datetime
+# output : list of available times for booking with a minimum of 15 minutes booking and 5 minute buffer
+import random
+import datetime
+minutes = [0,15,30]
+hours = list(range(0,24,1))
+# print(minutes)
+# print(hours)
+occupied = []
+for i in hours:
+    for j in range(len(minutes)-1):
+        occupied.append([datetime.datetime(1,1,1,i,minutes[j]),datetime.datetime(1,1,1,i,minutes[j+1])])
+# print(occupied)
+def available_time(occupied):
+    buffer = 5 # dependent on your mood or energy
+    mn_booking_time = 15 # dependent on services then this will be automatically changed
+    start = datetime.datetime(1,1,1,0,0)
+    end = datetime.datetime(1,1,1,23,59)
 
+    available = []
+    # for j in range(len(occupied)):
+    #     print(occupied[j][0].hour,occupied[j][0].minute)
+    #     print(occupied[j][1].hour, occupied[j][1].minute)
+    #     print()
+
+    for occupied_times in range(len(occupied)-1): # middle part
+        # print(occupied[occupied_times])
+        if int(occupied[occupied_times][1].hour) == int(occupied[occupied_times+1][0].hour): # if two contiguous elements are in the same hour
+            if int(occupied[occupied_times][1].minute) < int(occupied[occupied_times+1][0].minute): # if i[0].minute < i[1].minute. If so, that means there is some free time in the middle
+                if int(occupied[occupied_times+1][0].minute) - int(occupied[occupied_times][1].minute) >= mn_booking_time + buffer: # we want at least 15 minutes booking
+                    # end_time = occupied[occupied_times][1] + timedelta(minutes=mn_booking_time) + timedelta(minutes=buffer) # maximisde booking frequency
+                    available.append([occupied[occupied_times][1],occupied[occupied_times+1][0]]) # maximise bookint time
+        elif int(occupied[occupied_times][1].hour) < int(occupied[occupied_times+1][0].hour): # if previous hour is less than next hour
+            if (60 - int(occupied[occupied_times][1].minute)) + int(occupied[occupied_times+1][0].minute) >= mn_booking_time + buffer: # straight away check for available time
+                # end_time = occupied[occupied_times][1] + timedelta(minutes=mn_booking_time) + timedelta(minutes=buffer) # maximisde booking frequency
+                available.append([occupied[occupied_times][1],occupied[occupied_times+1][0]]) # maximise booking time
+
+    # beginning and ending part (remember to do checking as well )
+    earliest_booking = occupied[0]
+    latest_booking = occupied[-1]
+    # print(earliest_booking,latest_booking)
+    opening_hour = 0
+    closing_hour = 24
+    tomorrow = datetime.datetime(datetime.datetime.today().year,datetime.datetime.today().month,int(datetime.datetime.today().day)+1,0,0)
+    if int(latest_booking[1].hour) == closing_hour-1:
+        if (60 - int(latest_booking[1].minute)) >= mn_booking_time + buffer: # check if its more than buffer and required booking time
+            available.append([latest_booking[1], tomorrow])  # check two things: hour and minute
+    elif int(latest_booking[1].hour) < 23:
+        available.append([latest_booking[1], tomorrow])  # check two things: hour and minute
+
+    if int(earliest_booking[0].hour) == opening_hour: # check if opening hour and the earliest booking.hour is the same
+        if int(abs(0 - int(earliest_booking[0].minute))) >= mn_booking_time + buffer: # check if between the opening hour and the start of earliest appointment is more than buffer + required booking time
+            available.insert(0,[earliest_booking[0],datetime.datetime(datetime.datetime.today().year,datetime.datetime.today().month,datetime.datetime.today().day,0,0)]) # check two things: hour and minute
+    elif opening_hour < int(earliest_booking[0].hour):
+        available.insert(0, [earliest_booking[0],datetime.datetime(datetime.datetime.today().year, datetime.datetime.today().month,datetime.datetime.today().day, 0,0)])  # check two things: hour and minute
+
+    # print('Available Times are')
+    # for i in available:
+    #     print(f'{i[0].hour}:{i[0].minute} to {i[1].hour}:{i[1].minute}')
+    #
+    # print('Occupied Times are')
+    # for i in occupied:
+    #     print(f'{i[0].hour}:{i[0].minute} to {i[1].hour}:{i[1].minute}')
+    occupied += available
+    occupied.sort() # when this is done, pass this in to this function itself and the output would be the time that are not shown to customer and owner can decide what to do about it
+    # print(available)
+
+    return available
+available_time(occupied)
+
+
+
+# result = datetime.datetime(1,1,1,1,0)+timedelta(minutes=15) + timedelta(minutes=5)
+# print(result)
+
+# don = [[datetime.datetime(2021,1,1,1,1)]]
+# don += [[datetime.datetime(2020,1,1,1,3)]]
+# don.extend([[datetime.datetime(2020,1,1,1,3)]])
+# print(don)
+# don.sort()
+# print(don)
 
 
 

@@ -13,6 +13,26 @@
 
 
     <div>
+        <div>
+            <img src="{{pp}}" alt="No Profile Picture" class="avatar">
+        </div>
+        <form method="POST" action="#" enctype="multipart/form-data">
+            <div>
+                <label for="Profile_Picture">Change Profile Picture</label>
+                <input type="file" id="Profile_Picture" name="Profile_Picture">
+            </div>
+            <input type="submit" value="Confirm" name="Change_Profile_Picture">
+        </form>
+    </div>
+
+
+    <br/>
+    <br/>
+    <br/>
+
+
+
+    <div>
         <form method="POST" action="">
             {{form3.hidden_tag()}}
             <div style="min-width:45%;" class="input-group mb-3">
@@ -215,5 +235,5 @@
 
 
 
-
+<link rel= "stylesheet" href= "{{url_for('static',filename='styles/account.css') }}">
 {% endblock content %}
