@@ -86,7 +86,7 @@ class Shopping(db.Model,UserMixin):
     Item_Name = db.Column(db.String(100),nullable=False)
     Date = db.Column(db.DateTime,nullable=False) # default to datetime.today()
     Description = db.Column(db.String(500),nullable=False)
-    Edited_by = db.Column(db.Integer, nullable=False) # username of who edited it # be careful if user is deleted (basically user not exist)
+    Edited_by = db.Column(db.String(100), nullable=False) # username of who edited it # be careful if user is deleted (basically user not exist)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False)
 
 class Friends(db.Model,UserMixin):
@@ -108,8 +108,8 @@ class Booking_Hair_Cut(db.Model,UserMixin):
     Service = db.Column(db.String(100),nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=False) # user is the User table
 
-if __name__ == '__main__':
-    manager.run()
+# if __name__ == '__main__':
+#     manager.run()
 
 # admin = Admin(app)
 # admin.add_view(ModelView(Feedback,db.session))

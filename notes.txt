@@ -44,6 +44,10 @@ dad@gmail.com, 1, dad
 evelyn@gmail.com, 1, evelyn
 tiffany@gmail.com, 1, tiffany
 
+### Caching : DRAM (uses capacitors to store information but need to be refreshed) and SRAM (expensive but fast)
+
+
 
 ### Features to implement: notifications, auto delete, advertisement structure, different chat rooms, finish setting up your account (gender),
-### pending: profile picture (need to avoid hard refresh), migration on heroku
+### pending: profile picture (need to avoid hard refresh), for "shopping list" if the last edited date is today then only show the time, improve hair cut booking in test
+### just done: migration on heroku (migrate and upgrade locally first and then only commit to git )
