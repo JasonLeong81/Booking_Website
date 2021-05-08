@@ -44,4 +44,6 @@ dad@gmail.com, 1, dad
 evelyn@gmail.com, 1, evelyn
 tiffany@gmail.com, 1, tiffany
 
-### Features to implement: notifications, auto delete, advertisement structure, different chat rooms,
+
+### Features to implement: notifications, auto delete, advertisement structure, different chat rooms, finish setting up your account (gender),
+### pending: profile picture (need to avoid hard refresh), migration on heroku

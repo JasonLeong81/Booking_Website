@@ -15,10 +15,7 @@ admin = Blueprint('admin',__name__) # name, import_name (for easy navigation fro
 @admin.route('/admin_Account',methods=['GET','POST'])
 @login_required
 def admin_Account():
-    # Pending: create a user, CTR of every button and IP addresses of who logged in and where, cannot delete ourself or any other admins,
-    # write a function in which you can take a list of datetime as input and return a list of available times for a lunch with a 10 minute buffer.
-
-
+    # Pending: create a user, CTR of every button and IP addresses of who logged in and where,
     find_user = None
     hair_cut_appointments = None
     test = f""" select * from Booking where date == '{date.today()}'; """
