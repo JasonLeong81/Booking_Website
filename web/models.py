@@ -3,7 +3,12 @@ from datetime import datetime
 from flask_login import UserMixin
 # from flask_admin.contrib.sqla import ModelView
 # from flask_admin import Admin
-
+# from flask_migrate import Migrate, MigrateCommand
+# from flask_script import Manager
+#
+# migrate = Migrate(app, db)
+# manager = Manager(app)
+# manager.add_command('db', MigrateCommand)
 
 
 @login_manager.user_loader
@@ -103,10 +108,8 @@ class Booking_Hair_Cut(db.Model,UserMixin):
     Service = db.Column(db.String(100),nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=False) # user is the User table
 
-
-
-
-
+if __name__ == '__main__':
+    manager.run()
 
 # admin = Admin(app)
 # admin.add_view(ModelView(Feedback,db.session))

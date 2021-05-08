@@ -43,6 +43,12 @@ def admin_Account():
             if request.form['submit_delete_user'] == 'Delete User':
                 id_of_user_to_be_deleted = int(request.form['delete_user'])
                 user_to_be_deleted = User.query.filter_by(id=id_of_user_to_be_deleted).first()
+                if not user_to_be_deleted:
+                    flash(f'User {user_to_be_deleted} does not exist.')
+                    return redirect(url_for('admin.admin_Account'))
+                elif id_of_user_to_be_deleted == int(current_user.id):
+                    flash(f'Cannot delete yourself. Please seek other admins for help.')
+                    return redirect(url_for('admin.admin_Account'))
                 db.session.delete(user_to_be_deleted)
                 db.session.commit()
                 flash('User has been deleted. This cannot be undone.')

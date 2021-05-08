@@ -15,6 +15,11 @@ login_manager.init_app(app)
 # print(db, 'dbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
 mail = Mail(app)
 
+# from flask_migrate import Migrate, MigrateCommand
+# from flask_script import Manager
+# migrate = Migrate(app, db)
+# manager = Manager(app)
+# manager.add_command('db', MigrateCommand)
 
 from web.main.routes import main
 app.register_blueprint(main)
@@ -48,7 +53,7 @@ def Make_admins():
             db.session.add(user)
         db.session.commit()
     print('Admins have been created!')
-Make_admins()
+# Make_admins() # just create it once
 
 
 
@@ -73,7 +78,8 @@ def create_app(config_class=Config):
 
     return app
 
-
+# if __name__ =='__main__':
+#     manager.run()
 
 
 # if __name__ =='__main__':
