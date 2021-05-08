@@ -18,7 +18,7 @@ def admin_Account():
     # Pending: create a user, CTR of every button and IP addresses of who logged in and where,
     find_user = None
     hair_cut_appointments = None
-    test = f""" select * from Booking where date == '{date.today()}'; """
+    test = f""" select * from Booking where date = '{date.today()}'; """
 
     # db.session.query(User).filter(User.username == 'admin').update({User.admin: 'True'})
     # db.session.commit()
