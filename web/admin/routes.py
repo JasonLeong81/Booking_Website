@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for, session
 from web.main.forms import FeedbackForm, CourtBookingForm, MessagesForm
 from web import db,mail, Message
-from web.models import Feedback, Booking, Messages, User, Booking_Hair_Cut
+from web.models import Feedback, Booking, Messages, User, Booking_Hair_Cut, Shopping
 from flask_login import login_required, logout_user, login_user, current_user
 from bcrypt import *
 from datetime import date, datetime, timedelta
@@ -46,7 +46,10 @@ def admin_Account():
                 elif id_of_user_to_be_deleted == int(current_user.id):
                     flash(f'Cannot delete yourself. Please seek other admins for help.')
                     return redirect(url_for('admin.admin_Account'))
+                ### last edited by is also deleted
                 db.session.delete(user_to_be_deleted)
+                db.session.commit()
+                db.session.query(Shopping).filter(Shopping.Edited_by == user_to_be_deleted.username).update({Shopping.Edited_by: 'User has been deleted.'}) # might be some copy-deepcopy issues so be aware
                 db.session.commit()
                 flash('User has been deleted. This cannot be undone.')
                 return redirect(url_for('admin.admin_Account'))

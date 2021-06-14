@@ -4,7 +4,7 @@ import psycopg2 # https://www.psycopg.org/docs/usage.html#passing-parameters-to-
 
 class Config:
     SECRET_KEY = 'jason'
-    SQLALCHEMY_DATABASE_URI = 'postgres://roxkgnqetyxixw:67ca597f8a78b5ee8d03c73d4620eda63d077ba926b908e87e674ae9756aa838@ec2-52-213-167-210.eu-west-1.compute.amazonaws.com:5432/dfo78uaep5lbi8' # from https://medium.com/analytics-vidhya/heroku-deploy-your-flask-app-with-a-database-online-d19274a7a749
+    SQLALCHEMY_DATABASE_URI = 'postgres://ohdamdgyjdijjh:490b92ceb79119226d9a813d2a0fca176c0abef6f3af90be03bd7ed6dfaa7dd2@ec2-34-255-134-200.eu-west-1.compute.amazonaws.com:5432/d3ii73kejc58fe'
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///jason.db' # for deployment
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'  # for testing
 

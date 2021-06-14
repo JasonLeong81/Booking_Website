@@ -44,7 +44,7 @@ class Feedback(db.Model,UserMixin): # figure out a thred like in reddit where us
     feedback = db.Column(db.String(200),nullable=False)
     response_feedback = db.Column(db.String(500),nullable=True)
     Feedback_Status = db.Column(db.Integer,nullable=False) # 0 means not replied and 1 means an admin has replied
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=False) # user is the User table
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=True) # user is the User table
 
 class Booking(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,7 +52,7 @@ class Booking(db.Model,UserMixin):
     end_time = db.Column(db.DateTime,nullable=False)
     date = db.Column(db.Date,nullable=False)
     court = db.Column(db.Integer,nullable=False)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False) # user is the User table
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=True) # user is the User table
 
 class Promotion(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -64,7 +64,7 @@ class Messages(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     messages = db.Column(db.String(100),nullable=False)
     dates = db.Column(db.DateTime,nullable=False)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=True)
 
 class Grocery(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -72,28 +72,28 @@ class Grocery(db.Model,UserMixin):
     Type = db.Column(db.String(10),nullable=True)
     Type_id = db.Column(db.Integer,nullable=True)
     Date = db.Column(db.DateTime,nullable=False) # same as datetime in python
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=True)
 
 class Recipes(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     Name = db.Column(db.String(100),nullable=False)
     Category = db.Column(db.String(100),nullable=False)
     Ingredients = db.Column(db.String(100),nullable=False)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=True)
 
 class Shopping(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     Item_Name = db.Column(db.String(100),nullable=False)
     Date = db.Column(db.DateTime,nullable=False) # default to datetime.today()
     Description = db.Column(db.String(500),nullable=False)
-    Edited_by = db.Column(db.String(100), nullable=False) # username of who edited it # be careful if user is deleted (basically user not exist)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False)
+    Edited_by = db.Column(db.String(100), nullable=True) # username of who last edited it # be careful if user is deleted, thats why we put nullable=True
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=True)
 
 class Friends(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     Date = db.Column(db.DateTime,nullable=False) # default to datetime.today()
-    From_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=False) # if any one of these (From_id and To_id) are deleted, the entire row will be deleted.
-    To_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=False)
+    From_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete="CASCADE"),nullable=True) # if any one of these (From_id and To_id) are deleted, the entire row will be deleted.
+    To_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=True)
     Status = db.Column(db.Integer, nullable=False) # 0 -> Pending, 1 -> Accepted, 2 -> Rejected
     Friend_of_id = db.Column(db.Integer,nullable=False) # friend of id of someone in user table # if not a friend yet, then this value is 0
     Priviledged = db.Column(db.Integer,nullable=False) # if someone is priviledged, then the From_id (in this table) can edit the To_id's shopping list # Priviledged 0 is just friends and 1 means priviledged
@@ -106,7 +106,7 @@ class Booking_Hair_Cut(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     Date = db.Column(db.DateTime,nullable=False) # datetime.date
     Service = db.Column(db.String(100),nullable=False)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=False) # user is the User table
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id',ondelete='CASCADE'),nullable=True) # user is the User table
 
 # if __name__ == '__main__':
 #     manager.run()
